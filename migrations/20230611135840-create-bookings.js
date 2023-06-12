@@ -21,9 +21,6 @@ module.exports = {
       order_date: {
         type: Sequelize.DATE
       },
-      passengers: {
-        type: Sequelize.INTEGER
-      },
       amount: {
         type: Sequelize.INTEGER
       },

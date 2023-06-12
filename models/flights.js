@@ -11,6 +11,24 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      flights.belongsTo(models.airlines,
+        { foreignKey: 'airline_id' });
+
+      flights.hasOne(models.admins,
+        { foreignKey: 'id' });
+
+      flights.belongsTo(models.airports,
+        { foreignKey: 'departure' });
+
+      flights.belongsTo(models.airports,
+        { foreignKey: 'arrival' });
+
+      flights.hasMany(models.bookings,
+        { foreignKey: 'id' });
+
+      flights.belongsTo(models.seats, {
+        foreignKey: 'id'
+      })
     }
   }
   flights.init({
@@ -37,9 +55,9 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'flights',
   });
 
-  flights.associate = (models) => {
-    flights.belongsTo(models.airlines, { foreignKey: 'airline_id' });
-  };
+  // flights.associate = (models) => {
+  //   flights.belongsTo(models.airlines, { foreignKey: 'airline_id' });
+  // };
 
   return flights;
 };

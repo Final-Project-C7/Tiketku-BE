@@ -3,7 +3,6 @@ const { airlines } = require('../models')
 async function createAirlines(req, res) {
     try {
         const { airline_name } = req.body
-        console.log(req.body)
         const newAirline = await airlines.create({
             airline_name
         })
