@@ -11,6 +11,25 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      bookings.belongsTo(models.users, {
+        foreignKey: 'user_id'
+      })
+
+      bookings.belongsTo(models.flights, {
+        foreignKey: 'id'
+      })
+
+      bookings.hasOne(models.payments, {
+        foreignKey: 'id'
+      })
+
+      bookings.belongsTo(models.seats, {
+        foreignKey: 'id'
+      })
+
+      bookings.hasMany(models.passengers, {
+        foreignKey: 'id',
+      })
     }
   }
   bookings.init({
@@ -18,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
     flight_id: DataTypes.INTEGER,
     seat_id: DataTypes.INTEGER,
     order_date: DataTypes.DATE,
-    passengers: DataTypes.INTEGER,
     amount: DataTypes.INTEGER
   }, {
     sequelize,

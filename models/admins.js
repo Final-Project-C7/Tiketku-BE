@@ -11,6 +11,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      admins.belongsTo(models.flights, {
+        foreignKey: 'id'
+      })
     }
   }
   admins.init({

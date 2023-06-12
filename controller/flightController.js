@@ -34,7 +34,7 @@ async function getFlightById(req, res) {
     try {
         // Primary Key = PK
         const id = req.params.id;
-        const data = await airlines.findByPk(id, {
+        const data = await flights.findByPk(id, {
             include: {
                 model: airlines,
                 attributes: ['airline_name']
