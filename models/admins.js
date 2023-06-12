@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      admins.belongsTo(models.flights, {
+      admins.hasMany(models.flights, {
         foreignKey: 'id'
       })
     }
@@ -20,7 +20,6 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     email: DataTypes.STRING,
     password: DataTypes.STRING,
-    flight_id: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'admins',

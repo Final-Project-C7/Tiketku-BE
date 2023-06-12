@@ -1,13 +1,24 @@
-const router = require('express').Router()
+const router = require("express").Router();
 
-const airlineController = require('../controller/airlineController');
-const flightController = require('../controller/flightController')
+const Flights = require("./flights");
+const Airlines = require("./airlines");
+const Airports = require("./airport");
+const Users = require("./users");
+const Bookings = require("./bookings");
+const Admins = require("./admins");
+const Passengers = require("./passengers");
+const Seats = require("./seats");
+const Payments = require("./payments");
 
-// API airline
-router.post('/api/airline', airlineController.createAirlines)
+// API
+router.use("/api/v1/airline", Airlines);
+router.use("/api/v1/airports", Airports);
+router.use("/api/v1/flight", Flights);
+router.use("/api/v1/user", Users);
+router.use("/api/v1/bookings", Bookings);
+router.use("/api/v1/admin", Admins);
+router.use("/api/v1/passengers", Passengers);
+router.use("/api/v1/seats", Seats);
+router.use("/api/v1/payments", Payments);
 
-// API flight
-router.post('/api/flight', flightController.createFlights)
-router.get('/api/getFlightById/:id', flightController.getFlightById)
-
-module.exports = router
+module.exports = router;

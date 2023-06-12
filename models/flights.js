@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       flights.belongsTo(models.airlines,
         { foreignKey: 'airline_id' });
 
-      flights.hasOne(models.admins,
+      flights.belongsTo(models.admins,
         { foreignKey: 'id' });
 
       flights.belongsTo(models.airports,
@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     departure: DataTypes.INTEGER,
     arrival: DataTypes.INTEGER,
     seat_id: DataTypes.INTEGER,
+    admin_id: DataTypes.INTEGER,
     economyClass_price: DataTypes.INTEGER,
     premiumEconomy_price: DataTypes.INTEGER,
     business_price: DataTypes.INTEGER,
