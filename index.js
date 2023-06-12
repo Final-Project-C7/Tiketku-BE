@@ -6,8 +6,9 @@ const app = express()
 const router = require('./routes')
 const cors = require('cors')
 
+app.use(express.json())
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(express.urlencoded({ extended:false }))
+app.use(express.urlencoded({ extended: false }))
 
 app.use(cors())
 
