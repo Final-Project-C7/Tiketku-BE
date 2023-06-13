@@ -1,0 +1,267 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ngoding-nodejs-express-sequeliz-postgresql",
+    "version": "1.0.0"
+  },
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Users API Collection"
+    }
+  ],
+  "paths": {
+    "/api/v1/user/login": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "This is User Login API",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "email",
+                    "example": "budi123@mail.com"
+                  },
+                  "password": {
+                    "type": "password",
+                    "example": "passwordbudi"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success Login",
+            "schema": "#/components/schemas/User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "username": {
+                          "type": "string",
+                          "example": "Budi"
+                        },
+                        "email": {
+                          "type": "email",
+                          "example": "budi123@mail.com"
+                        },
+                        "token": {
+                          "type": "string",
+                          "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTksIndhcmVob3VzZUlkIjoxMiwiaWF0IjoxNjY2MDIyNTc0fQ.HpBlFpKLYexC8uw5Qps6yfNcX_m8OinmqUO4NLPQgHs"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Wrong Password",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Wrong Password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/register": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "Success registered new user",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Budi"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "budi123@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "passwordbudi"
+                  },
+                  "phoneNumber": {
+                    "type": "string",
+                    "example": "081234567890"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new User",
+            "schema": "#/components/schemas/User",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newUser": {
+                          "type": "object",
+                          "properties": {
+                            "name": {
+                              "type": "string",
+                              "example": "Budi"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "Budi123@mail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "081234567890"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Minimum password not enough",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "minimum password length must be 8 charater or more"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400 ": {
+            "description": "user already exist",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "email already exist!"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Budi"
+          },
+          "email": {
+            "type": "string",
+            "example": "budi123@mail.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+          },
+          "phoneNumber": {
+            "type": "string",
+            "example": "081234567890"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "bearerToken": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  }
+}
