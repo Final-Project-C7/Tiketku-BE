@@ -1,13 +1,17 @@
 const router = require("express").Router();
 
 // controller
-const usersController = require("../controller/usersController");
+const User = require("../controller/usersController");
 
 // middleware
 const Authentication = require("../middlewares/authenticate");
 
 // API
-router.post("/register", usersController.register);
-router.post("/login", usersController.login);
+router.post("/register", User.register);
+router.post("/login", User.login);
+router.put("/:id", User.updateUser);
+router.delete("/:id", User.deleteUser);
+router.get("/", User.getAllUsers);
+router.get("/:id", User.getUserById);
 
 module.exports = router;
