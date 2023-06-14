@@ -1,38 +1,32 @@
-const jwt = require('jsonwebtoken');
-const { User, Profile } = require('../models');
+const jwt = require("jsonwebtoken");
+const { users } = require("../models");
 
-module.exports = function (req, res, next) {
-    // req is an object
-
-    // Client will headers called authorization which contains JWT
-    try {
-        const bearerToken = req.headers.authorization // Basic Authentication -> Bearer Authentication
-        const token = bearerToken.split("Bearer ")[1];
-
-        // check if request header authorization sent or not
-        if(!token) {
-            return res.status(401).json({
-                status: 'Failed',
-                message: "required token"
-            })
-        }
-
-        const payload = jwt.verify(token, 'rahasia')
-        User.findByPk(payload.id, {
-            include: {
-                model: Profile
-            }
-        })
-            .then(instance => {
-                req.user = instance;
-                next()
-            })
+module.exports = async function (req, res, next) {
+  try {
+    // check jika request header authorization ada atau gak
+    if (!req.headers.authorization) {
+      return res.status(401).json({
+        status: "failed",
+        message: "Token Gak ada/authorization nya gak ada",
+      });
     }
 
-    catch(err) {
-        res.status(401).json({
-            status: 'Failed',
-            message: err.message
-        })
-    }
-}
+    const bearerToken = req.headers.authorization;
+    // req.headers.authorization => bearer authentication
+
+    const token = bearerToken.split("Bearer ")[1];
+
+    // jwt verifikasi tokennya
+    const payload = jwt.verify(token, "rahasia");
+    console.log(payload);
+
+    const user = await users.findByPk(payload.id);
+    req.user = user;
+    next();
+  } catch (err) {
+    res.status(400).json({
+      status: "failed",
+      message: err.message,
+    });
+  }
+};
