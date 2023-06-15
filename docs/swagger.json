@@ -12,6 +12,10 @@
     {
       "name": "Airports",
       "description": "Airports API Collection"
+    },
+    {
+      "name": "Airlines",
+      "description": "Airlines API Collection"
     }
   ],
   "paths": {
@@ -251,7 +255,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newAirport": {
+                        "newAirports": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -266,7 +270,7 @@
                               "type": "string",
                               "example": "Jakarta"
                             },
-                            "Country": {
+                            "country": {
                               "type": "string",
                               "example": "Indonesia"
                             },
@@ -302,8 +306,9 @@
         ],
         "requestBody": {
           "description": "Success created new Airport",
+          "required": true,
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -315,17 +320,15 @@
                     "type": "string",
                     "example": "Jakarta"
                   },
-                  "Country": {
+                  "country": {
                     "type": "string",
                     "example": "Indonesia"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
-              }
-            },
-            "image/png": {
-              "schema": {
-                "type": "string",
-                "format": "binary"
               }
             }
           }
@@ -334,7 +337,7 @@
           "201": {
             "description": "Success created new Airport",
             "content": {
-              "application/json": {
+              "multipart/form-data:": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -345,7 +348,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newAirport": {
+                        "newAirports": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -360,7 +363,7 @@
                               "type": "string",
                               "example": "Jakarta"
                             },
-                            "Country": {
+                            "country": {
                               "type": "string",
                               "example": "Indonesia"
                             },
@@ -388,7 +391,7 @@
           "401": {
             "description": "authorization failed because invalid token",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -443,7 +446,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newAirport": {
+                        "newAirports": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -458,7 +461,7 @@
                               "type": "string",
                               "example": "Jakarta"
                             },
-                            "Country": {
+                            "country": {
                               "type": "string",
                               "example": "Indonesia"
                             },
@@ -507,7 +510,7 @@
         "requestBody": {
           "description": "Success edit Airport by id",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -519,17 +522,15 @@
                     "type": "string",
                     "example": "Jakarta"
                   },
-                  "Country": {
+                  "country": {
                     "type": "string",
                     "example": "Indonesia"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
-              }
-            },
-            "image/png": {
-              "schema": {
-                "type": "string",
-                "format": "binary"
               }
             }
           }
@@ -538,7 +539,7 @@
           "200": {
             "description": "Success edit Airport by ID",
             "content": {
-              "application/json": {
+              "multipart/form-data": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -549,7 +550,7 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newAirport": {
+                        "newAirports": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -564,7 +565,7 @@
                               "type": "string",
                               "example": "Jakarta"
                             },
-                            "Country": {
+                            "country": {
                               "type": "string",
                               "example": "Indonesia"
                             },
@@ -586,8 +587,73 @@
                     }
                   }
                 }
-              },
-              "image/png": {
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Airports"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Airport ID to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success delete Airport by ID"
+          },
+          "400": {
+            "description": "Failed delete Airport because Airport ID not found"
+          }
+        }
+      }
+    },
+    "/api/v1/airline": {
+      "get": {
+        "tags": ["Airlines"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get all Airlines",
+            "content": {
+              "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
@@ -598,7 +664,76 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "newAirport": {
+                        "newAirports": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_name": {
+                              "type": "string",
+                              "example": "Emirates"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Airlines"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "Success created new Airline",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_name": {
+                    "type": "string",
+                    "example": "Emirates"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new Airline",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAirlines": {
                           "type": "object",
                           "properties": {
                             "id": {
@@ -609,17 +744,171 @@
                               "type": "string",
                               "example": "Soekarno-Hatta International Airport"
                             },
-                            "city": {
-                              "type": "string",
-                              "example": "Jakarta"
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
                             },
-                            "Country": {
-                              "type": "string",
-                              "example": "Indonesia"
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/airline/{id}": {
+      "get": {
+        "tags": ["Airlines"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Airline to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Airline by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAirports": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
                             },
-                            "imgURL": {
+                            "airline_name": {
                               "type": "string",
-                              "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
+                              "example": "Emirates"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Airlines"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Airline to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Airline by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_name": {
+                    "type": "string",
+                    "example": "Emirates"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit Airline by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAirports": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_name": {
+                              "type": "string",
+                              "example": "Emirates"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -661,7 +950,7 @@
         }
       },
       "delete": {
-        "tags": ["Airports"],
+        "tags": ["Airlines"],
         "security": [
           {
             "bearerToken": []
@@ -669,21 +958,22 @@
         ],
         "parameters": [
           {
-            "in": "path",
             "name": "id",
-            "description": "Product id to delete",
+            "in": "path",
+            "description": "Airline ID to delete",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "integer",
+              "format": "int64"
             }
           }
         ],
         "responses": {
           "201": {
-            "description": "Success delete Product by Id"
+            "description": "Success delete Airline by Id"
           },
           "400": {
-            "description": "Failed delete Product because Product id not found"
+            "description": "Failed delete Airline because Airline ID not found"
           }
         }
       }
@@ -731,13 +1021,30 @@
             "type": "string",
             "example": "Jakarta"
           },
-          "Country": {
+          "country": {
             "type": "string",
             "example": "Indonesia"
           },
           "imgURL": {
             "type": "string",
             "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          }
+        }
+      },
+      "Airline": {
+        "type": "object",
+        "properties": {
+          "airline_name": {
+            "type": "string",
+            "example": "Emirates"
           },
           "updatedAt": {
             "type": "date",
