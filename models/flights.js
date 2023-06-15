@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class flights extends Model {
     /**
@@ -11,56 +9,54 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      flights.belongsTo(models.airlines,
-        { foreignKey: 'airline_id' });
+      flights.belongsTo(models.airlines, { foreignKey: "airline_id" });
 
-      flights.belongsTo(models.admins,
-        { foreignKey: 'id' });
+      flights.belongsTo(models.admins, { foreignKey: "admin_id" });
 
-      flights.belongsTo(models.airports,
-        {
-          as: 'departureAirport',
-          foreignKey: 'departure'
-        });
+      flights.belongsTo(models.airports, {
+        as: "departureAirport",
+        foreignKey: "departure",
+      });
 
-      flights.belongsTo(models.airports,
-        {
-          as: 'arrivalAirport',
-          foreignKey: 'arrival'
-        });
+      flights.belongsTo(models.airports, {
+        as: "arrivalAirport",
+        foreignKey: "arrival",
+      });
 
-      flights.hasMany(models.bookings,
-        { foreignKey: 'id' });
+      flights.hasMany(models.bookings, { foreignKey: "id" });
 
-      flights.belongsTo(models.seats, {
-        foreignKey: 'id'
-      })
+      flights.hasMany(models.seats, {
+        foreignKey: "flight_id",
+      });
     }
   }
-  flights.init({
-    airline_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'airlines',
-        key: 'airline_id'
-      }
+  flights.init(
+    {
+      airline_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "airlines",
+          key: "airline_id",
+        },
+      },
+      flight_code: DataTypes.STRING,
+      departure: DataTypes.INTEGER,
+      arrival: DataTypes.INTEGER,
+      seat_id: DataTypes.INTEGER,
+      admin_id: DataTypes.INTEGER,
+      economyClass_price: DataTypes.INTEGER,
+      premiumEconomy_price: DataTypes.INTEGER,
+      business_price: DataTypes.INTEGER,
+      firstClass_price: DataTypes.INTEGER,
+      departure_time: DataTypes.DATE,
+      arrival_time: DataTypes.DATE,
     },
-    flight_code: DataTypes.STRING,
-    departure: DataTypes.INTEGER,
-    arrival: DataTypes.INTEGER,
-    seat_id: DataTypes.INTEGER,
-    admin_id: DataTypes.INTEGER,
-    economyClass_price: DataTypes.INTEGER,
-    premiumEconomy_price: DataTypes.INTEGER,
-    business_price: DataTypes.INTEGER,
-    firstClass_price: DataTypes.INTEGER,
-    departure_time: DataTypes.DATE,
-    arrival_time: DataTypes.DATE
-  }, {
-    sequelize,
-    modelName: 'flights',
-  });
+    {
+      sequelize,
+      modelName: "flights",
+    }
+  );
 
   // flights.associate = (models) => {
   //   flights.belongsTo(models.airlines, { foreignKey: 'airline_id' });
