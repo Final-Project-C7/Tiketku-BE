@@ -14,15 +14,15 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       bookings.belongsTo(models.flights, {
-        foreignKey: "id",
+        foreignKey: "flight_id",
       });
 
       bookings.hasOne(models.payments, {
-        foreignKey: "id",
+        foreignKey: "booking_id",
       });
 
       bookings.belongsTo(models.seats, {
-        foreignKey: "id",
+        foreignKey: "booking_id",
       });
 
       bookings.hasMany(models.passengers, {
