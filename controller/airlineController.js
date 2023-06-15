@@ -7,9 +7,11 @@ const { airlines } = require("../models");
 
 // create airline
 const createAirlines = catchAsync(async (req, res) => {
-  const { airline_name } = req.body;
+  const { airline_name, baggage, cabin_baggage } = req.body;
   const newAirline = await airlines.create({
     airline_name,
+    baggage,
+    cabin_baggage,
   });
   res.status(201).json({
     status: "success",
@@ -107,7 +109,7 @@ const deleteAirline = catchAsync(async (req, res) => {
 
 // update airline
 const updateAirline = catchAsync(async (req, res) => {
-  const { airline_name } = req.body;
+  const { airline_name, baggage, cabin_baggage } = req.body;
   const id = req.params.id;
 
   const Airline = await airlines.findByPk(id);
@@ -122,6 +124,8 @@ const updateAirline = catchAsync(async (req, res) => {
   await airlines.update(
     {
       airline_name,
+      baggage,
+      cabin_baggage,
     },
     {
       where: {
@@ -133,6 +137,8 @@ const updateAirline = catchAsync(async (req, res) => {
     status: "Success",
     data: {
       airline_name,
+      baggage,
+      cabin_baggage,
     },
   });
 });
