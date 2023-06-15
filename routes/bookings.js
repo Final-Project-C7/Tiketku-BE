@@ -4,8 +4,10 @@ const router = require("express").Router();
 const bookingsController = require("../controller/bookingsController");
 
 // middleware
+const Auth = require("../middlewares/authenticate");
 
 // API
-router.post("/", bookingsController.createBookings);
+router.post("/", Auth, bookingsController.createBookings);
+// router.get("/:id", Auth, bookingsController.getBookingsById);
 
 module.exports = router;

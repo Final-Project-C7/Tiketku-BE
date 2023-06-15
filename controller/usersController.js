@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { users } = require("../models");
+const { users, bookings } = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -96,7 +96,12 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const user = await users.findByPk(id);
+  const user = await users.findByPk(id, {
+    include: {
+      model: bookings,
+      attributes: ["id", "amount", "flight_id", "seat_id", "order_date"],
+    },
+  });
 
   // Jika pengguna tidak ditemukan
   if (!user) {
