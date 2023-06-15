@@ -8,5 +8,8 @@ const flightController = require("../controller/flightController");
 // API
 router.post("/", flightController.createFlights);
 router.get("/:id", flightController.getFlightById);
+router.get("/", flightController.getFlight);
+router.put("/:id", flightController.updateFlight);
+router.delete("/:id", flightController.deleteFlight);
 
 module.exports = router;
