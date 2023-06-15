@@ -4,8 +4,9 @@ const router = require("express").Router();
 const passengersController = require("../controller/passengersController");
 
 // middleware
+const Auth = require("../middlewares/authenticate");
 
 // API
-router.post("/", passengersController.createPassengers);
+router.post("/", Auth, passengersController.createPassengers);
 
 module.exports = router;
