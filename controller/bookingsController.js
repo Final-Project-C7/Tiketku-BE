@@ -24,33 +24,42 @@ const createBookings = catchAsync(async (req, res) => {
   });
 });
 
-// const getBookingsById = async (req, res) => {
-//   try {
-//     const id = req.params.id;
-//     const data = await bookings.findByPk(id, {
-//       include: {
-//         model: passengers,
-//         attributes: ["name"],
-//       },
-//     });
+const getBookingsById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await bookings.findByPk(id, {
+      include: {
+        model: passengers,
+        attributes: [
+          "id",
+          "name",
+          "born_date",
+          "citizen",
+          "identity_number",
+          "publisher_country",
+          "valid_until",
+          "booking_id",
+        ],
+      },
+    });
 
-//     if (!data) {
-//       throw new ApiError(httpStatus.NOT_FOUND, "Passenger not found");
-//     }
+    if (!data) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Passenger not found");
+    }
 
-//     res.status(200).json({
-//       status: "success",
-//       data,
-//     });
-//   } catch (err) {
-//     res.status(err.statusCode).json({
-//       status: "error",
-//       message: err.message,
-//     });
-//   }
-// };
+    res.status(200).json({
+      status: "success",
+      data,
+    });
+  } catch (err) {
+    res.status(err.statusCode).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
 
 module.exports = {
   createBookings,
-  // getBookingsById,
+  getBookingsById,
 };
