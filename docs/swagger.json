@@ -14,6 +14,10 @@
       "description": "Airports API Collection"
     },
     {
+      "name": "Flights",
+      "description": "Airlines API Collection"
+    },
+    {
       "name": "Airlines",
       "description": "Airlines API Collection"
     }
@@ -228,6 +232,657 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/flight": {
+      "get": {
+        "tags": ["Flights"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get all Flights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newFlights": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_code": {
+                              "type": "integer",
+                              "example": 112
+                            },
+                            "departure": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "arrival": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "economyClass_price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "premiumEconomy_price": {
+                              "type": "integer",
+                              "example": 350000
+                            },
+                            "business_price": {
+                              "type": "integer",
+                              "example": 450000
+                            },
+                            "firstClass_price": {
+                              "type": "integer",
+                              "example": 550000
+                            },
+                            "departure_time": {
+                              "type": "date",
+                              "example": "2022-10-17"
+                            },
+                            "arrival_time": {
+                              "type": "date",
+                              "example": "2022-10-17"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "airline": {
+                              "type": "string",
+                              "example": null
+                            },
+                            "departureAirport": {
+                              "type": "object",
+                              "properties": {
+                                "airport_name": {
+                                  "type": "string",
+                                  "example": "Soekarno-Hatta International Airport"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "Jakarta"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Indonesia"
+                                },
+                                "imgURL": {
+                                  "type": "string",
+                                  "example": "https://ik.imagekit.io/test123/IMG-1686821195784_SpKO5Y1Ml.png"
+                                }
+                              }
+                            },
+                            "arrivalAirport": {
+                              "type": "string",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Flights"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "Success created new Flight",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "admin_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "flight_code": {
+                    "type": "integer",
+                    "example": 112
+                  },
+                  "departure": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "arrival": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "seat_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "economyClass_price": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "premiumEconomy_price": {
+                    "type": "integer",
+                    "example": 350000
+                  },
+                  "business_price": {
+                    "type": "integer",
+                    "example": 450000
+                  },
+                  "firstClass_price": {
+                    "type": "integer",
+                    "example": 550000
+                  },
+                  "departure_time": {
+                    "type": "date",
+                    "example": "2022-10-17"
+                  },
+                  "arrival_time": {
+                    "type": "date",
+                    "example": "2022-10-17"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new Flight",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newFlights": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_code": {
+                              "type": "integer",
+                              "example": 112
+                            },
+                            "departure": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "arrival": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "economyClass_price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "premiumEconomy_price": {
+                              "type": "integer",
+                              "example": 350000
+                            },
+                            "business_price": {
+                              "type": "integer",
+                              "example": 450000
+                            },
+                            "firstClass_price": {
+                              "type": "integer",
+                              "example": 550000
+                            },
+                            "departure_time": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "arrival_time": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flight/{id}": {
+      "get": {
+        "tags": ["Flights"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Flight to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Flight by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newFlights": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_code": {
+                              "type": "integer",
+                              "example": 112
+                            },
+                            "departure": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "arrival": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "economyClass_price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "premiumEconomy_price": {
+                              "type": "integer",
+                              "example": 350000
+                            },
+                            "business_price": {
+                              "type": "integer",
+                              "example": 450000
+                            },
+                            "firstClass_price": {
+                              "type": "integer",
+                              "example": 550000
+                            },
+                            "departure_time": {
+                              "type": "date",
+                              "example": "2022-10-17"
+                            },
+                            "arrival_time": {
+                              "type": "date",
+                              "example": "2022-10-17"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "airline": {
+                              "type": "string",
+                              "example": null
+                            },
+                            "departureAirport": {
+                              "type": "object",
+                              "properties": {
+                                "airport_name": {
+                                  "type": "string",
+                                  "example": "Soekarno-Hatta International Airport"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "Jakarta"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Indonesia"
+                                },
+                                "imgURL": {
+                                  "type": "string",
+                                  "example": "https://ik.imagekit.io/test123/IMG-1686821195784_SpKO5Y1Ml.png"
+                                }
+                              }
+                            },
+                            "arrivalAirport": {
+                              "type": "string",
+                              "example": null
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Flights"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Flightto return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Flight by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "airline_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "admin_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "flight_code": {
+                    "type": "integer",
+                    "example": 112
+                  },
+                  "departure": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "arrival": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "seat_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "economyClass_price": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "premiumEconomy_price": {
+                    "type": "integer",
+                    "example": 350000
+                  },
+                  "business_price": {
+                    "type": "integer",
+                    "example": 450000
+                  },
+                  "firstClass_price": {
+                    "type": "integer",
+                    "example": 550000
+                  },
+                  "departure_time": {
+                    "type": "date",
+                    "example": "2022-10-17"
+                  },
+                  "arrival_time": {
+                    "type": "date",
+                    "example": "2022-10-17"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit Flight by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newFlights": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_code": {
+                              "type": "integer",
+                              "example": 112
+                            },
+                            "departure": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "arrival": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "economyClass_price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "premiumEconomy_price": {
+                              "type": "integer",
+                              "example": 350000
+                            },
+                            "business_price": {
+                              "type": "integer",
+                              "example": 450000
+                            },
+                            "firstClass_price": {
+                              "type": "integer",
+                              "example": 550000
+                            },
+                            "departure_time": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "arrival_time": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Flights"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "Flight ID to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success delete Flight by ID"
+          },
+          "400": {
+            "description": "Failed delete Flight because Flight ID not found"
           }
         }
       }
@@ -508,7 +1163,7 @@
           }
         ],
         "requestBody": {
-          "description": "Success edit Airport by id",
+          "description": "Success edit Airport by ID",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -970,7 +1625,7 @@
         ],
         "responses": {
           "201": {
-            "description": "Success delete Airline by Id"
+            "description": "Success delete Airline by ID"
           },
           "400": {
             "description": "Failed delete Airline because Airline ID not found"
@@ -1028,6 +1683,67 @@
           "imgURL": {
             "type": "string",
             "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          }
+        }
+      },
+      "Flight": {
+        "type": "object",
+        "properties": {
+          "airline_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "admin_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "flight_code": {
+            "type": "integer",
+            "example": 112
+          },
+          "departure": {
+            "type": "integer",
+            "example": 1
+          },
+          "arrival": {
+            "type": "integer",
+            "example": 1
+          },
+          "seat_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "economyClass_price": {
+            "type": "integer",
+            "example": 250000
+          },
+          "premiumEconomy_price": {
+            "type": "integer",
+            "example": 350000
+          },
+          "business_price": {
+            "type": "integer",
+            "example": 450000
+          },
+          "firstClass_price": {
+            "type": "integer",
+            "example": 550000
+          },
+          "departure_time": {
+            "type": "date",
+            "example": "2022-10-17T00:00:00.000Z"
+          },
+          "arrival_time": {
+            "type": "date",
+            "example": "2022-10-17T00:00:00.000Z"
           },
           "updatedAt": {
             "type": "date",
