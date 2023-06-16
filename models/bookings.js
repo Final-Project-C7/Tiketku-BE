@@ -21,8 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "booking_id",
       });
 
-      bookings.belongsTo(models.seats, {
-        foreignKey: "seat_id",
+
+      bookings.hasMany(models.seats, {
+        foreignKey: "booking_id",
+
       });
 
       bookings.hasMany(models.passengers, {
@@ -34,7 +36,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       user_id: DataTypes.INTEGER,
       flight_id: DataTypes.INTEGER,
-      seat_id: DataTypes.INTEGER,
       order_date: DataTypes.DATE,
       amount: DataTypes.INTEGER,
     },

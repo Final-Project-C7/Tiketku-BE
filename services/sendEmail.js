@@ -1,39 +1,31 @@
-const expressAsyncHandler = require("express-async-handler");
-const dotenv = require("dotenv");
 const nodemailer = require("nodemailer");
-const generateOTP = require("./generateOTP");
-dotenv.config();
+const generateOTP = require("./otpGenerator");
 
-let transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  secure: false,
-  auth: {
-    user: process.env.SMTP_MAIL,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+const sendOTPByEmail = async (email, otp) => {
+  try {
+    // Konfigurasi transporter untuk pengiriman email
+    const transporter = nodemailer.createTransport({
+      service: "Gmail",
+      auth: {
+        user: "ferdy.lz2000@gmail.com",
+        pass: "asakurayoh",
+      },
+    });
 
-const sendEmail = expressAsyncHandler(async (req, res) => {
-  const { email } = req.body;
-  console.log(email);
+    // Konfigurasi email yang akan dikirim
+    const mailOptions = {
+      from: "ferdy.lz2000@gmail.com",
+      to: email,
+      subject: "OTP Verification",
+      text: `Your OTP is: ${otp}`,
+    };
 
-  const otp = generateOTP();
+    // Kirim email
+    await transporter.sendMail(mailOptions);
+    console.log("OTP email sent successfully");
+  } catch (error) {
+    console.error("Error sending OTP email", error);
+  }
+};
 
-  var mailOptions = {
-    from: process.env.SMTP_MAIL,
-    to: email,
-    subject: "OTP form Callback Coding",
-    text: `Your OTP is: ${otp}`,
-  };
-
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Email sent successfully!");
-    }
-  });
-});
-
-module.exports = { sendEmail };
+module.exports = sendOTPByEmail;

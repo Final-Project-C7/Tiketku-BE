@@ -5,13 +5,12 @@ const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
 const createBookings = catchAsync(async (req, res) => {
-  const { flight_id, seat_id, order_date, amount } = req.body;
+  const { flight_id, order_date, amount } = req.body;
 
   // register user baru
   const newBookings = await bookings.create({
     user_id: req.user.id,
     flight_id,
-    seat_id,
     order_date,
     amount,
   });
