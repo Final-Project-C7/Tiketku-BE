@@ -5,6 +5,8 @@ const jwt = require("jsonwebtoken");
 const { users, bookings } = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
+const generateOTP = require("../services/otpGenerator");
+const sendOTPByEmail = require("../services/sendEmail");
 
 const register = catchAsync(async (req, res) => {
   const { name, password, email, phoneNumber } = req.body;
@@ -27,6 +29,12 @@ const register = catchAsync(async (req, res) => {
   // enkripsi password
   const hashedPassword = bcrypt.hashSync(password, 10);
 
+  // generate OTP
+  const otp = generateOTP();
+
+  // Kirim OTP melalui email
+  await sendOTPByEmail(email, otp);
+
   // register user baru
   const newUser = await users.create({
     name,
@@ -39,6 +47,7 @@ const register = catchAsync(async (req, res) => {
     status: "success",
     data: {
       newUser,
+      otp,
     },
   });
 });
