@@ -2,11 +2,12 @@ const { seats } = require("../models");
 const catchAsync = require("../utils/catchAsync");
 
 const createSeats = catchAsync(async (req, res) => {
-  const { seat_number, availability } = req.body;
+  const { seat_number, flight_id, booking_id } = req.body;
 
   const newSeats = await seats.create({
     seat_number,
-    availability,
+    flight_id,
+    booking_id,
   });
 
   res.status(201).json({
