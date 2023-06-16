@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "ngoding-nodejs-express-sequeliz-postgresql",
+    "title": "Open API C7",
     "version": "1.0.0"
   },
   "tags": [
