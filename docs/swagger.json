@@ -1367,6 +1367,14 @@
                   "airline_name": {
                     "type": "string",
                     "example": "Emirates"
+                  },
+                  "baggage": {
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "cabin_baggage": {
+                    "type": "integer",
+                    "example": 7
                   }
                 }
               }
@@ -1398,6 +1406,14 @@
                             "airport_name": {
                               "type": "string",
                               "example": "Soekarno-Hatta International Airport"
+                            },
+                            "baggage": {
+                              "type": "integer",
+                              "example": 20
+                            },
+                            "cabin_baggage": {
+                              "type": "integer",
+                              "example": 7
                             },
                             "updatedAt": {
                               "type": "date",
@@ -1533,6 +1549,14 @@
                   "airline_name": {
                     "type": "string",
                     "example": "Emirates"
+                  },
+                  "baggage": {
+                    "type": "integer",
+                    "example": 20
+                  },
+                  "cabin_baggage": {
+                    "type": "integer",
+                    "example": 7
                   }
                 }
               }
@@ -1564,6 +1588,14 @@
                             "airline_name": {
                               "type": "string",
                               "example": "Emirates"
+                            },
+                            "baggage": {
+                              "type": "integer",
+                              "example": 20
+                            },
+                            "cabin_baggage": {
+                              "type": "integer",
+                              "example": 7
                             },
                             "updatedAt": {
                               "type": "date",
