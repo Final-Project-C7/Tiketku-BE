@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
-const { users, bookings } = require("../models");
+const { users, bookings, passengers } = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const generateOTP = require("../services/otpGenerator");
@@ -109,6 +109,7 @@ const getUserById = catchAsync(async (req, res) => {
     include: {
       model: bookings,
       attributes: ["id", "amount", "flight_id", "seat_id", "order_date"],
+      include: passengers,
     },
   });
 
