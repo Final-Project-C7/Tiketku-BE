@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       bookings.belongsTo(models.seats, {
-        foreignKey: "booking_id",
+        foreignKey: "seat_id",
       });
 
       bookings.hasMany(models.passengers, {

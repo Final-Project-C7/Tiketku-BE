@@ -1,6 +1,6 @@
 const httpStatus = require("http-status");
 
-const { bookings, passengers } = require("../models");
+const { bookings, passengers, payments, seats } = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -28,19 +28,30 @@ const getBookingsById = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await bookings.findByPk(id, {
-      include: {
-        model: passengers,
-        attributes: [
-          "id",
-          "name",
-          "born_date",
-          "citizen",
-          "identity_number",
-          "publisher_country",
-          "valid_until",
-          "booking_id",
-        ],
-      },
+      include: [
+        {
+          model: passengers,
+          attributes: [
+            "id",
+            "name",
+            "born_date",
+            "citizen",
+            "identity_number",
+            "publisher_country",
+            "valid_until",
+            "booking_id",
+          ],
+        },
+        {
+          model: payments, // Include tabel "payments"
+          attributes: [
+            "id",
+            "payment_method",
+            "payment_amount",
+            "payment_date",
+          ],
+        },
+      ],
     });
 
     if (!data) {

@@ -4,8 +4,9 @@ const router = require("express").Router();
 const seatsController = require("../controller/seatsController");
 
 // middleware
+const Auth = require("../middlewares/authenticate");
 
 // API
-router.post("/", seatsController.createSeats);
+router.post("/", Auth, seatsController.createSeats);
 
 module.exports = router;
