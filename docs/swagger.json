@@ -20,6 +20,10 @@
     {
       "name": "Airlines",
       "description": "Airlines API Collection"
+    },
+    {
+      "name": "Bookings",
+      "description": "Bookings API Collection"
     }
   ],
   "paths": {
@@ -1661,6 +1665,381 @@
           },
           "400": {
             "description": "Failed delete Airline because Airline ID not found"
+          }
+        }
+      }
+    },
+    "/api/v1/bookings": {
+      "post": {
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "Success created new Booking",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "flight_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "order_date": {
+                    "type": "date",
+                    "example": "2022-10-17T00:00:00.000Z"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "example": 250000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new Booking",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newBookings": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "user_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "order_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/bookings/{id}": {
+      "get": {
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Booking to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Booking by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAirports": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "user_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "order_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "passengers": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "name": {
+                                    "type": "string",
+                                    "example": "Budi"
+                                  },
+                                  "born_date": {
+                                    "type": "date",
+                                    "example": "1945-08-17"
+                                  },
+                                  "citizen": {
+                                    "type": "string",
+                                    "example": "Indonesia"
+                                  },
+                                  "identity_number": {
+                                    "type": "integer",
+                                    "example": 117
+                                  },
+                                  "publisher_country": {
+                                    "type": "string",
+                                    "example": "Indonesia"
+                                  },
+                                  "valid_until": {
+                                    "type": "date",
+                                    "example": "2022-10-17T14:04:48.389Z"
+                                  },
+                                  "booking_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  }
+                                }
+                              },
+                              "example": [null, null]
+                            },
+                            "payment": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "payment_method": {
+                                    "type": "string",
+                                    "example": "Credit Card"
+                                  },
+                                  "payment_amount": {
+                                    "type": "integer",
+                                    "example": 250000
+                                  },
+                                  "payment_date": {
+                                    "type": "date",
+                                    "example": "2022-10-17T14:04:48.389Z"
+                                  }
+                                }
+                              },
+                              "example": [null, null]
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Bookings"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Booking to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Booking by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "flight_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "order_date": {
+                    "type": "date",
+                    "example": "2022-10-17T00:00:00.000Z"
+                  },
+                  "amount": {
+                    "type": "integer",
+                    "example": 250000
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit Booking by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAirports": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "user_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "order_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
