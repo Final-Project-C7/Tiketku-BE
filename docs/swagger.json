@@ -1466,11 +1466,11 @@
                             },
                             "departure_time": {
                               "type": "date",
-                              "example": "2022-10-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "arrival_time": {
                               "type": "date",
-                              "example": "2022-10-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -1599,11 +1599,11 @@
                   },
                   "departure_time": {
                     "type": "date",
-                    "example": "2022-10-17"
+                    "example": "1945-08-17"
                   },
                   "arrival_time": {
                     "type": "date",
-                    "example": "2022-10-17"
+                    "example": "1945-08-17"
                   }
                 }
               }
@@ -1674,11 +1674,11 @@
                             },
                             "departure_time": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "arrival_time": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -1804,11 +1804,11 @@
                             },
                             "departure_time": {
                               "type": "date",
-                              "example": "2022-10-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "arrival_time": {
                               "type": "date",
-                              "example": "2022-10-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -1943,11 +1943,11 @@
                   },
                   "departure_time": {
                     "type": "date",
-                    "example": "2022-10-17"
+                    "example": "1945-08-17"
                   },
                   "arrival_time": {
                     "type": "date",
-                    "example": "2022-10-17"
+                    "example": "1945-08-17"
                   }
                 }
               }
@@ -2014,11 +2014,11 @@
                             },
                             "departure_time": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "arrival_time": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             }
                           }
                         }
@@ -2120,7 +2120,7 @@
                             },
                             "order_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "amount": {
                               "type": "integer",
@@ -2166,7 +2166,7 @@
                   },
                   "order_date": {
                     "type": "date",
-                    "example": "2022-10-17T00:00:00.000Z"
+                    "example": "1945-08-17"
                   },
                   "amount": {
                     "type": "integer",
@@ -2209,7 +2209,7 @@
                             },
                             "order_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "amount": {
                               "type": "integer",
@@ -2307,7 +2307,7 @@
                             },
                             "order_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "amount": {
                               "type": "integer",
@@ -2336,7 +2336,7 @@
                                   },
                                   "born_date": {
                                     "type": "date",
-                                    "example": "1945-08-17"
+                                    "example": "1945-08-17T00:00:00.000Z"
                                   },
                                   "citizen": {
                                     "type": "string",
@@ -2352,7 +2352,7 @@
                                   },
                                   "valid_until": {
                                     "type": "date",
-                                    "example": "2022-10-17T14:04:48.389Z"
+                                    "example": "1945-08-17T00:00:00.000Z"
                                   },
                                   "booking_id": {
                                     "type": "integer",
@@ -2381,7 +2381,7 @@
                                   },
                                   "payment_date": {
                                     "type": "date",
-                                    "example": "2022-10-17T14:04:48.389Z"
+                                    "example": "1945-08-17T00:00:00.000Z"
                                   }
                                 }
                               },
@@ -2430,7 +2430,7 @@
                   },
                   "order_date": {
                     "type": "date",
-                    "example": "2022-10-17T00:00:00.000Z"
+                    "example": "2022-10-17"
                   },
                   "amount": {
                     "type": "integer",
@@ -2473,7 +2473,7 @@
                             },
                             "order_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "amount": {
                               "type": "integer",
@@ -2790,7 +2790,7 @@
                             },
                             "born_date": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "citizen": {
                               "type": "string",
@@ -2806,7 +2806,7 @@
                             },
                             "valid_until": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "booking_id": {
                               "type": "integer",
@@ -2907,7 +2907,7 @@
                             },
                             "born_date": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "citizen": {
                               "type": "string",
@@ -2923,7 +2923,7 @@
                             },
                             "valid_until": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "booking_id": {
                               "type": "integer",
@@ -3017,7 +3017,7 @@
                             },
                             "born_date": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "citizen": {
                               "type": "string",
@@ -3033,7 +3033,7 @@
                             },
                             "valid_until": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "booking_id": {
                               "type": "integer",
@@ -3145,7 +3145,7 @@
                             },
                             "born_date": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "citizen": {
                               "type": "string",
@@ -3161,7 +3161,7 @@
                             },
                             "valid_until": {
                               "type": "date",
-                              "example": "1945-08-17"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "booking_id": {
                               "type": "integer",
@@ -3664,7 +3664,7 @@
                             },
                             "payment_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -3757,7 +3757,7 @@
                             },
                             "payment_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -3855,7 +3855,7 @@
                             },
                             "payment_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -3916,7 +3916,7 @@
                   },
                   "payment_date": {
                     "type": "date",
-                    "example": "2022-10-17T00:00:00.000Z"
+                    "example": "1945-08-17"
                   }
                 }
               }
@@ -3959,7 +3959,7 @@
                             },
                             "payment_date": {
                               "type": "date",
-                              "example": "2022-10-17T00:00:00.000Z"
+                              "example": "1945-08-17T00:00:00.000Z"
                             },
                             "updatedAt": {
                               "type": "date",
@@ -4039,13 +4039,23 @@
             "type": "string",
             "example": "Budi"
           },
-          "email": {
-            "type": "string",
-            "example": "budi123@mail.com"
-          },
           "password": {
             "type": "string",
+            "format": "password",
             "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "Budi123@mail.com"
+          },
+          "otp": {
+            "type": "integer",
+            "example": 123456
+          },
+          "verified": {
+            "type": "boolean",
+            "example": true
           },
           "phoneNumber": {
             "type": "string",
@@ -4158,6 +4168,14 @@
             "type": "string",
             "example": "Emirates"
           },
+          "baggage": {
+            "type": "integer",
+            "example": 20
+          },
+          "cabin_baggage": {
+            "type": "integer",
+            "example": 7
+          },
           "updatedAt": {
             "type": "date",
             "example": "2022-10-17T14:04:48.389Z"
@@ -4231,7 +4249,7 @@
           },
           "born_date": {
             "type": "date",
-            "example": "1945-08-17"
+            "example": "1945-08-17T00:00:00.000Z"
           },
           "citizen": {
             "type": "string",
@@ -4247,7 +4265,7 @@
           },
           "valid_until": {
             "type": "date",
-            "example": "1945-08-17"
+            "example": "1945-08-17T00:00:00.000Z"
           },
           "booking_id": {
             "type": "integer",
@@ -4305,7 +4323,7 @@
           },
           "payment_date": {
             "type": "date",
-            "example": "2022-10-17T00:00:00.000Z"
+            "example": "1945-08-17T00:00:00.000Z"
           },
           "updatedAt": {
             "type": "date",
