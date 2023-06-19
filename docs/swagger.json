@@ -33,6 +33,10 @@
     {
       "name": "Passengers",
       "description": "Passengers API Collection"
+    },
+    {
+      "name": "Seats",
+      "description": "Seats API Collection"
     }
   ],
   "paths": {
@@ -3061,7 +3065,7 @@
           {
             "name": "id",
             "in": "path",
-            "description": "ID of Passengerto return",
+            "description": "ID of Passenger to return",
             "required": true,
             "schema": {
               "type": "integer",
@@ -3223,6 +3227,391 @@
           },
           "400": {
             "description": "Failed delete Passenger because Passenger ID not found"
+          }
+        }
+      }
+    },
+    "/api/v1/seats": {
+      "get": {
+        "tags": ["Seats"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get all Seats",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newSeats": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_number": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Seats"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "Success created new Seat",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "seat_number": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "flight_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "booking_id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new Seat",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newSeats": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_number": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/seats/{id}": {
+      "get": {
+        "tags": ["Seats"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Seat to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Seat by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newSeats": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_number": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Seats"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Seat to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Seat by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "seat_number": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "flight_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "booking_id": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit Seat by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newSeats": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_number": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Seats"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Seat ID to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success delete Seat by ID"
+          },
+          "400": {
+            "description": "Failed delete Seat because Seat ID not found"
           }
         }
       }
@@ -3446,6 +3835,31 @@
           "valid_until": {
             "type": "date",
             "example": "1945-08-17"
+          },
+          "booking_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          }
+        }
+      },
+      "Seats": {
+        "type": "object",
+        "properties": {
+          "seat_number": {
+            "type": "integer",
+            "example": 1
+          },
+          "flight_id": {
+            "type": "integer",
+            "example": 1
           },
           "booking_id": {
             "type": "integer",
