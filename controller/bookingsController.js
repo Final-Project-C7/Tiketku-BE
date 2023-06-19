@@ -69,7 +69,32 @@ const getBookingsById = async (req, res) => {
   }
 };
 
+const updateBooking = catchAsync(async (req, res) => {
+  const id = req.params.id;
+  const { flight_id, order_date, amount } = req.body;
+
+  const booking = await bookings.findByPk(id);
+
+  if (!booking) {
+    throw new ApiError(404, `Booking with id ${id} is not found`);
+  }
+
+  // Update the seat's properties
+  flight_id = flight_id;
+  order_date = order_date;
+  amount = amount;
+  await booking.save();
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      booking,
+    },
+  });
+});
+
 module.exports = {
   createBookings,
   getBookingsById,
+  updateBooking
 };

@@ -248,10 +248,43 @@ const deleteFlight = catchAsync(async (req, res) => {
   });
 });
 
+async function getFlightByAirport(req, res) {
+  try {
+    const { depart, arrive } = req.params
+
+    const flight = await flights.findAll({
+      include: [
+        {
+          model: airports,
+          as: 'departureAirport',
+          where: { city: depart }
+        },
+        {
+          model: airports,
+          as: 'arrivalAirport',
+          where: { city: arrive }
+        }
+      ]
+    });
+
+    res.status(200).json({
+      status: "success",
+      flight,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err.message,
+    });
+  }
+}
+
+
 module.exports = {
   createFlights,
   getFlightById,
   getFlight,
   updateFlight,
-  deleteFlight
+  deleteFlight,
+  getFlightByAirport
 };
