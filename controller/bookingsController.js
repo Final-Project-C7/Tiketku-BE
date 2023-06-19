@@ -23,6 +23,17 @@ const createBookings = catchAsync(async (req, res) => {
   });
 });
 
+//GET ALL
+const findAllBooking = catchAsync(async (req, res) => {
+  const bookingsData = await bookings.findAll();
+  res.status(200).json({
+    status: "success",
+    data: {
+      bookings: bookingsData,
+    },
+  });
+});
+
 const getBookingsById = async (req, res) => {
   try {
     const id = req.params.id;
@@ -79,10 +90,9 @@ const updateBooking = catchAsync(async (req, res) => {
     throw new ApiError(404, `Booking with id ${id} is not found`);
   }
 
-  // Update the seat's properties
-  flight_id = flight_id;
-  order_date = order_date;
-  amount = amount;
+  booking.flight_id = flight_id;
+  booking.order_date = order_date;
+  booking.amount = amount;
   await booking.save();
 
   res.status(200).json({
@@ -93,8 +103,34 @@ const updateBooking = catchAsync(async (req, res) => {
   });
 });
 
+const deleteBooking = catchAsync(async (req, res) => {
+  const id = req.params.id;
+
+  const booking = await bookings.findByPk(id);
+
+  if (!booking) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      `Airport with this id ${id} is not found`
+    );
+  }
+
+  await bookings.destroy({
+    where: {
+      id,
+    },
+  });
+
+  res.status(200).json({
+    status: "Success",
+    message: `Bookings dengan id ${id} terhapus`,
+  });
+});
+
 module.exports = {
   createBookings,
+  findAllBooking,
   getBookingsById,
-  updateBooking
+  updateBooking,
+  deleteBooking,
 };
