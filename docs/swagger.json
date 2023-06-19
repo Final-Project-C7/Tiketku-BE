@@ -37,6 +37,10 @@
     {
       "name": "Seats",
       "description": "Seats API Collection"
+    },
+    {
+      "name": "Payments",
+      "description": "Payments API Collection"
     }
   ],
   "paths": {
@@ -3615,6 +3619,415 @@
           }
         }
       }
+    },
+    "/api/v1/payments": {
+      "get": {
+        "tags": ["Payments"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get all Payments",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newPayments": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "payment_method": {
+                              "type": "string",
+                              "example": "Credit Card"
+                            },
+                            "payment_amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "payment_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Payments"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "requestBody": {
+          "description": "Success created new Payment",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "booking_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "payment_method": {
+                    "type": "string",
+                    "example": "Credit Card"
+                  },
+                  "payment_amount": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "payment_date": {
+                    "type": "date",
+                    "example": "1945-08-17"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success created new Payment",
+            "content": {
+              "application/json:": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newPayments": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "payment_method": {
+                              "type": "string",
+                              "example": "Credit Card"
+                            },
+                            "payment_amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "payment_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/payments/{id}": {
+      "get": {
+        "tags": ["Payments"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Payment to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Payment by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newPayments": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "payment_method": {
+                              "type": "string",
+                              "example": "Credit Card"
+                            },
+                            "payment_amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "payment_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Payments"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Payment to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Payment by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "booking_id": {
+                    "type": "integer",
+                    "example": 1
+                  },
+                  "payment_method": {
+                    "type": "string",
+                    "example": "Credit Card"
+                  },
+                  "payment_amount": {
+                    "type": "integer",
+                    "example": 250000
+                  },
+                  "payment_date": {
+                    "type": "date",
+                    "example": "2022-10-17T00:00:00.000Z"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit paymentby ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newPayments": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "booking_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "payment_method": {
+                              "type": "string",
+                              "example": "Credit Card"
+                            },
+                            "payment_amount": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "payment_date": {
+                              "type": "date",
+                              "example": "2022-10-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "authorization failed because invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "fail"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid Token"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Payments"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Payment ID to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success delete Payment by ID"
+          },
+          "400": {
+            "description": "Failed delete Payment because Payment ID not found"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3864,6 +4277,35 @@
           "booking_id": {
             "type": "integer",
             "example": 1
+          },
+          "updatedAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          },
+          "createdAt": {
+            "type": "date",
+            "example": "2022-10-17T14:04:48.389Z"
+          }
+        }
+      },
+      "Payments": {
+        "type": "object",
+        "properties": {
+          "booking_id": {
+            "type": "integer",
+            "example": 1
+          },
+          "payment_method": {
+            "type": "string",
+            "example": "Credit Card"
+          },
+          "payment_amount": {
+            "type": "integer",
+            "example": 250000
+          },
+          "payment_date": {
+            "type": "date",
+            "example": "2022-10-17T00:00:00.000Z"
           },
           "updatedAt": {
             "type": "date",
