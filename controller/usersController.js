@@ -105,20 +105,21 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const user = await users.findByPk(id);
-
-  // Jika pengguna tidak ditemukan
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
-  }
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      user,
+  const user = await users.findByPk(id, {
+    include: {
+      model: bookings,
+      attributes: ["id", "amount", "flight_id", "seat_id", "order_date"],
+      include: [
+        {
+          model: passengers,
+        },
+        { model: payments },
+        {
+          model: seats,
+        },
+      ],
     },
   });
-});
 
 const updateUser = catchAsync(async (req, res) => {
   const id = req.params.id;
