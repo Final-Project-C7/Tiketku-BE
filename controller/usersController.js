@@ -105,21 +105,7 @@ const getAllUsers = catchAsync(async (req, res) => {
 
 const getUserById = catchAsync(async (req, res) => {
   const id = req.params.id;
-  const user = await users.findByPk(id, {
-    include: {
-      model: bookings,
-      attributes: ["id", "amount", "flight_id", "seat_id", "order_date"],
-      include: [
-        {
-          model: passengers,
-        },
-        { model: payments },
-        {
-          model: seats,
-        },
-      ],
-    },
-  });
+  const user = await users.findByPk(id);
 
   // Jika pengguna tidak ditemukan
   if (!user) {
