@@ -1,6 +1,7 @@
 const httpStatus = require("http-status");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const generateRandomToken = require("../services/generateRandomToken");
 
 const {
   users,
@@ -109,23 +110,66 @@ const login = catchAsync(async (req, res) => {
   }
 });
 
-const resetPassword = catchAsync(async (req, res) => {
-  const { email, newPassword } = req.body;
+const generateLink = catchAsync(async (req, res) => {
+  const { email } = req.body;
 
-  // Cari pengguna berdasarkan alamat email
-  const user = await users.findOne({ where: { email: email } });
+  // Find user by email
+  const user = await users.findOne({
+    where: {
+      email,
+    },
+  });
+
+  // If user doesn't exist
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  // Setel password baru
-  const hashedPassword = bcrypt.hashSync(newPassword, 10);
-  user.password = hashedPassword;
+  // Generate reset token
+  const resetToken = generateRandomToken();
+
+  // Set reset password token and expiration time
+  user.resetPasswordToken = resetToken;
+  user.resetPasswordExpires = Date.now() + 3600000; // Token expires in 1 hour
   await user.save();
+
+  // Generate the reset password link
+  const resetPasswordLink = `c7-tiketku.up.railway.app/api/v1/user/reset-password`;
+
+  // Send the reset password link via email
+  await sendEmailResetPassword(user.email, resetPasswordLink); // Make sure you have implemented this function
 
   res.status(200).json({
     status: "success",
-    message: "Password reset successful",
+    message: "Reset password link has been sent to your email",
+  });
+});
+
+const resetPassword = catchAsync(async (req, res) => {
+  const { email, password } = req.body;
+
+  // Cari user berdasarkan email
+  const user = await users.findOne({
+    where: {
+      email,
+    },
+  });
+
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist");
+  }
+
+  // Enkripsi password baru
+  const hashedPassword = bcrypt.hashSync(password, 10);
+
+  // Update password user
+  await user.update({
+    password: hashedPassword,
+  });
+
+  res.status(200).json({
+    status: "success",
+    message: "Password has been reset",
   });
 });
 
@@ -257,4 +301,6 @@ module.exports = {
   deleteUser,
   getUserById,
   verifyOTP,
+  generateLink,
+  resetPassword,
 };
