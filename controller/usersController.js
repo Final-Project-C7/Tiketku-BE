@@ -130,7 +130,7 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const verifyOTP = catchAsync(async (req, res) => {
-  const { otp } = req.body;
+  const { email, otp } = req.body;
 
   // Cari pengguna berdasarkan alamat email
   const user = await users.findOne({ where: { email: email } });
