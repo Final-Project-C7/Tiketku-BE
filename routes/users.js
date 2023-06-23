@@ -11,6 +11,8 @@ router.post("/register", User.register);
 router.post("/login", User.login);
 router.post("/verify", User.verifyOTP);
 router.put("/update", User.updateUser);
+router.post("/generate-password", User.generateLink);
+router.post("/reset-password", User.resetPassword);
 router.delete("/:id", User.deleteUser);
 router.get("/", User.getAllUsers);
 router.get("/:id", User.getUserById);
