@@ -2,6 +2,7 @@ const httpStatus = require("http-status");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateRandomToken = require("../services/generateRandomToken");
+const Authentication = require("../middlewares/authenticate");
 
 const {
   users,
@@ -209,9 +210,15 @@ const getAllUsers = catchAsync(async (req, res) => {
   });
 });
 
-const getUserById = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const user = await users.findByPk(id, {
+const getUserByToken = catchAsync(async (req, res) => {
+  const token = req.headers.authorization; // Get token from Authorization header
+  const tokenWithoutPrefix = token.split(" ")[1];
+  // Verify the token and get user ID
+  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
+  const userId = decodedToken.id;
+
+  // Find the user by ID
+  const user = await users.findByPk(userId, {
     include: {
       model: bookings,
       attributes: ["amount", "flight_id", "order_date", "user_id"],
@@ -221,6 +228,7 @@ const getUserById = catchAsync(async (req, res) => {
       },
     },
   });
+
   res.status(200).json({
     status: "success",
     data: {
@@ -299,7 +307,7 @@ module.exports = {
   getAllUsers,
   updateUser,
   deleteUser,
-  getUserById,
+  getUserByToken,
   verifyOTP,
   generateLink,
   resetPassword,

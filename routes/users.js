@@ -15,6 +15,6 @@ router.post("/generate-password", User.generateLink);
 router.put("/reset-password", User.resetPassword);
 router.delete("/:id", User.deleteUser);
 router.get("/", User.getAllUsers);
-router.get("/:id", User.getUserById);
+router.get("/user-info", Authentication, User.getUserByToken);
 
 module.exports = router;
