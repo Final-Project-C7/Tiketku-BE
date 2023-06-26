@@ -10,7 +10,7 @@ const Authentication = require("../middlewares/authenticate");
 router.post("/register", User.register);
 router.post("/login", User.login);
 router.post("/verify", User.verifyOTP);
-router.put("/update", User.updateUser);
+router.put("/update", Authentication, User.updateUser);
 router.post("/generate-password", User.generateLink);
 router.put("/reset-password", User.resetPassword);
 router.delete("/:id", User.deleteUser);
