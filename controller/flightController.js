@@ -54,16 +54,16 @@ async function getFlightById(req, res) {
       include: [
         {
           model: airlines,
-          attributes: ["airline_name", "baggage", "cabin_baggage"],
+          attributes: ["airline_name"],
         },
         {
           model: airports,
-          as: "departureAirport",
+          as: 'departureAirport',
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
         {
           model: airports,
-          as: "arrivalAirport",
+          as: 'arrivalAirport',
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
       ],
@@ -87,16 +87,16 @@ async function getFlight(req, res) {
       include: [
         {
           model: airlines,
-          attributes: ["airline_name", "baggage", "cabin_baggage"],
+          attributes: ["airline_name"],
         },
         {
           model: airports,
-          as: "departureAirport",
+          as: 'departureAirport',
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
         {
           model: airports,
-          as: "arrivalAirport",
+          as: 'arrivalAirport',
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
       ],
@@ -127,8 +127,7 @@ const updateFlight = catchAsync(async (req, res) => {
     business_price,
     firstClass_price,
     departure_time,
-    arrival_time,
-  } = req.body;
+    arrival_time, } = req.body;
   const id = req.params.id;
   const file = req.file;
 
@@ -251,21 +250,24 @@ const deleteFlight = catchAsync(async (req, res) => {
 
 async function getFlightByAirport(req, res) {
   try {
-    const { depart, arrive } = req.params;
+    const { depart, arrive } = req.params
 
     const flight = await flights.findAll({
       include: [
         {
           model: airports,
-          as: "departureAirport",
-          where: { city: depart },
+          as: 'departureAirport',
+          where: { city: depart }
         },
         {
           model: airports,
-          as: "arrivalAirport",
-          where: { city: arrive },
+          as: 'arrivalAirport',
+          where: { city: arrive }
         },
-      ],
+        {
+          model: airlines,
+        }
+      ]
     });
 
     res.status(200).json({
@@ -280,11 +282,12 @@ async function getFlightByAirport(req, res) {
   }
 }
 
+
 module.exports = {
   createFlights,
   getFlightById,
   getFlight,
   updateFlight,
   deleteFlight,
-  getFlightByAirport,
+  getFlightByAirport
 };
