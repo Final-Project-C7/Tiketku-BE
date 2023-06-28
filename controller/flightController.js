@@ -83,24 +83,51 @@ async function getFlightById(req, res) {
 
 async function getFlight(req, res) {
   try {
-    const data = await flights.findAll({
-      include: [
-        {
-          model: airlines,
-          attributes: ["airline_name", "baggage", "cabin_baggage"],
-        },
-        {
-          model: airports,
-          as: "departureAirport",
-          attributes: ["airport_name", "city", "country", "imgURL"],
-        },
-        {
-          model: airports,
-          as: "arrivalAirport",
-          attributes: ["airport_name", "city", "country", "imgURL"],
-        },
-      ],
-    });
+    let data;
+
+    if (req.query.departure && req.query.arrival) {
+      const { departure, arrival } = req.query;
+
+      data = await flights.findAll({
+        include: [
+          {
+            model: airlines,
+            attributes: ["airline_name", "baggage", "cabin_baggage"],
+          },
+          {
+            model: airports,
+            as: "departureAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+            where: { city: departure },
+          },
+          {
+            model: airports,
+            as: "arrivalAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+            where: { city: arrival },
+          },
+        ],
+      });
+    } else {
+      data = await flights.findAll({
+        include: [
+          {
+            model: airlines,
+            attributes: ["airline_name", "baggage", "cabin_baggage"],
+          },
+          {
+            model: airports,
+            as: "departureAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+          },
+          {
+            model: airports,
+            as: "arrivalAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+          },
+        ],
+      });
+    }
 
     res.status(200).json({
       status: "success",
@@ -280,42 +307,6 @@ async function getFlightByAirport(req, res) {
   }
 }
 
-async function getFlightByQuery(req, res) {
-  try {
-    const { departure } = req.query.departure;
-    const { arrival } = req.query.arrival;
-    const { departure_time } = req.query.departure_time;
-
-    const flightsData = await flights.findAll({
-      include: [
-        {
-          model: airports,
-          as: "departureAirport",
-          where: { city: departure },
-        },
-        {
-          model: airports,
-          as: "arrivalAirport",
-          where: { city: arrival },
-        },
-      ],
-      where: {
-        departure_time: departure_time,
-      },
-    });
-
-    res.status(200).json({
-      status: "success",
-      data: flightsData,
-    });
-  } catch (err) {
-    res.status(404).json({
-      status: "failed",
-      message: err.message,
-    });
-  }
-}
-
 module.exports = {
   createFlights,
   getFlightById,
@@ -323,5 +314,4 @@ module.exports = {
   updateFlight,
   deleteFlight,
   getFlightByAirport,
-  getFlightByQuery,
 };
