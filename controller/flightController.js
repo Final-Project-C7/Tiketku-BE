@@ -280,6 +280,42 @@ async function getFlightByAirport(req, res) {
   }
 }
 
+async function getFlightByQuery(req, res) {
+  try {
+    const { departure } = req.query.departure;
+    const { arrival } = req.query.arrival;
+    const { departure_time } = req.query.departure_time;
+
+    const flightsData = await flights.findAll({
+      include: [
+        {
+          model: airports,
+          as: "departureAirport",
+          where: { city: departure },
+        },
+        {
+          model: airports,
+          as: "arrivalAirport",
+          where: { city: arrival },
+        },
+      ],
+      where: {
+        departure_time: departure_time,
+      },
+    });
+
+    res.status(200).json({
+      status: "success",
+      data: flightsData,
+    });
+  } catch (err) {
+    res.status(404).json({
+      status: "failed",
+      message: err.message,
+    });
+  }
+}
+
 module.exports = {
   createFlights,
   getFlightById,
@@ -287,4 +323,5 @@ module.exports = {
   updateFlight,
   deleteFlight,
   getFlightByAirport,
+  getFlightByQuery,
 };
