@@ -47,11 +47,6 @@
     "/api/v1/user": {
       "get": {
         "tags": ["Users"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success get all Users",
@@ -335,29 +330,33 @@
         }
       }
     },
-    "/api/v1/user/{id}": {
-      "get": {
+    "/api/v1/user/verify": {
+      "post": {
         "tags": ["Users"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of User to return",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
+        "requestBody": {
+          "description": "This is User verify API",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "email",
+                    "example": "budi123@mail.com"
+                  },
+                  "otp": {
+                    "type": "integer",
+                    "example": "123456"
+                  }
+                }
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Success get User by ID",
+            "description": "OTP verification successful",
             "content": {
               "application/json": {
                 "schema": {
@@ -367,41 +366,29 @@
                       "type": "string",
                       "example": "Success"
                     },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "newUsers": {
-                          "type": "object",
-                          "properties": {
-                            "name": {
-                              "type": "string",
-                              "example": "Budi"
-                            },
-                            "email": {
-                              "type": "string",
-                              "format": "email",
-                              "example": "Budi123@mail.com"
-                            },
-                            "password": {
-                              "type": "string",
-                              "format": "password",
-                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
-                            },
-                            "phoneNumber": {
-                              "type": "string",
-                              "example": "081234567890"
-                            },
-                            "updatedAt": {
-                              "type": "date",
-                              "example": "2022-10-17T14:04:48.389Z"
-                            },
-                            "createdAt": {
-                              "type": "date",
-                              "example": "2022-10-17T14:04:48.389Z"
-                            }
-                          }
-                        }
-                      }
+                    "message": {
+                      "type": "string",
+                      "example": "OTP verification successful"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Invalid OTP"
                     }
                   }
                 }
@@ -409,7 +396,73 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/v1/user/generate-password": {
+      "post": {
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "This is generate password API",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "email",
+                    "example": "budi123@mail.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reset password link has been sent to your email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Reset password link has been sent to your email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed Reset password link because user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/update": {
       "put": {
         "tags": ["Users"],
         "security": [
@@ -417,20 +470,8 @@
             "bearerToken": []
           }
         ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of User to return",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
         "requestBody": {
-          "description": "Success edit User by ID",
+          "description": "Success edit User",
           "content": {
             "application/json": {
               "schema": {
@@ -461,7 +502,7 @@
         },
         "responses": {
           "200": {
-            "description": "Success edit User by ID",
+            "description": "Success edit User",
             "content": {
               "application/json": {
                 "schema": {
@@ -477,19 +518,31 @@
                         "newUsers": {
                           "type": "object",
                           "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
                             "name": {
                               "type": "string",
                               "example": "Budi"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
                             },
                             "email": {
                               "type": "string",
                               "format": "email",
                               "example": "Budi123@mail.com"
                             },
-                            "password": {
-                              "type": "string",
-                              "format": "password",
-                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            "otp": {
+                              "type": "integer",
+                              "example": 123456
+                            },
+                            "verified": {
+                              "type": "boolean",
+                              "example": true
                             },
                             "phoneNumber": {
                               "type": "string",
@@ -531,16 +584,102 @@
                 }
               }
             }
+          },
+          "404": {
+            "description": "Failed edit User because user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
-      },
+      }
+    },
+    "/api/v1/user/reset-password": {
+      "put": {
+        "tags": ["Users"],
+        "requestBody": {
+          "description": "Success Reset Password User",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "budi123@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "passwordBudi"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password has been reset",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Password has been reset"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed Reset Password User because user not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User doesn't exist"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/user/{id}": {
       "delete": {
         "tags": ["Users"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -554,11 +693,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete User by ID"
+          "200": {
+            "description": "Success delete User by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete User because User ID not found"
+          "404": {
+            "description": "Failed delete User because User ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "User dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -566,11 +739,6 @@
     "/api/v1/airline": {
       "get": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success get all Airlines",
@@ -626,11 +794,6 @@
       },
       "post": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "requestBody": {
           "description": "Success created new Airline",
           "required": true,
@@ -733,11 +896,6 @@
     "/api/v1/airline/search": {
       "get": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "name",
@@ -802,11 +960,6 @@
     "/api/v1/airline/{id}": {
       "get": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -874,11 +1027,6 @@
       },
       "put": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -978,11 +1126,6 @@
       },
       "delete": {
         "tags": ["Airlines"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -996,11 +1139,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Airline by ID"
+          "200": {
+            "description": "Success delete Airline by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Airline dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Airline because Airline ID not found"
+          "404": {
+            "description": "Failed delete Airline because Airline ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Airline with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1008,11 +1185,6 @@
     "/api/v1/airports": {
       "get": {
         "tags": ["Airports"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success get all Airports",
@@ -1072,11 +1244,6 @@
       },
       "post": {
         "tags": ["Airports"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "requestBody": {
           "description": "Success created new Airport",
           "required": true,
@@ -1187,11 +1354,6 @@
     "/api/v1/airports/{id}": {
       "get": {
         "tags": ["Airports"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -1263,11 +1425,6 @@
       },
       "put": {
         "tags": ["Airports"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -1371,11 +1528,6 @@
       },
       "delete": {
         "tags": ["Airports"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -1389,11 +1541,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Airport by ID"
+          "200": {
+            "description": "Success delete Airport by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Airport dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Airport because Airport ID not found"
+          "404": {
+            "description": "Failed delete Airport because Airport ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Airport with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1401,11 +1587,6 @@
     "/api/v1/flight": {
       "get": {
         "tags": ["Flights"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "responses": {
           "200": {
             "description": "Success get all Flights",
@@ -1544,11 +1725,6 @@
       },
       "post": {
         "tags": ["Flights"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "requestBody": {
           "description": "Success created new Flight",
           "required": true,
@@ -1723,11 +1899,6 @@
     "/api/v1/flight/{id}": {
       "get": {
         "tags": ["Flights"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -1877,11 +2048,6 @@
       },
       "put": {
         "tags": ["Flights"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -2053,11 +2219,6 @@
       },
       "delete": {
         "tags": ["Flights"],
-        "security": [
-          {
-            "bearerToken": []
-          }
-        ],
         "parameters": [
           {
             "name": "id",
@@ -2071,11 +2232,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Flight by ID"
+          "200": {
+            "description": "Success delete Flight by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "flights with id 1 was successfully deleted"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Flight because Flight ID not found"
+          "404": {
+            "description": "Failed delete Flight because Flight ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "flights with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2538,11 +2733,104 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Booking by ID"
+          "200": {
+            "description": "Success delete Booking by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Booking dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Booking because Booking ID not found"
+          "404": {
+            "description": "Failed delete Booking because Booking ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Booking with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin": {
+      "get": {
+        "tags": ["Admins"],
+        "responses": {
+          "200": {
+            "description": "Success get all Admins",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAdmins": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Admin"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "admin123@mail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -2745,6 +3033,229 @@
                     "message": {
                       "type": "string",
                       "example": "Wrong Password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/{id}": {
+      "get": {
+        "tags": ["Admins"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Admin to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Admin by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAdmins": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Admin"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "admin123@mail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Admins"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of Admin to return",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Success edit Admin by ID",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Admin"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email",
+                    "example": "admin123@mail.com"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "password",
+                    "example": "passwordAdmin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success edit Admin by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newAdmins": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Admin"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "admin123@mail.com"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Admins"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Admin ID to delete",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success delete Admin by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Admin dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Failed delete Admin because Admin ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Seat with this id 1 is not found"
                     }
                   }
                 }
@@ -3226,11 +3737,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Passenger by ID"
+          "200": {
+            "description": "Success delete Passenger by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Passenger dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Passenger because Passenger ID not found"
+          "404": {
+            "description": "Failed delete Passenger because Passenger ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Passengersith this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -3611,11 +4156,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Seat by ID"
+          "200": {
+            "description": "Success delete Seat by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Seat dengan id 1 terhapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Seat because Seat ID not found"
+          "404": {
+            "description": "Failed delete Seat because Seat ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Seat with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4020,11 +4599,45 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": "Success delete Payment by ID"
+          "200": {
+            "description": "Success delete Payment by ID",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Payment dengan id 1 telah dihapus"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "Failed delete Payment because Payment ID not found"
+          "404": {
+            "description": "Failed delete Payment because Payment ID not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "failed"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Pembayaran dengan id 1 tidak ditemukan"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -4339,7 +4952,8 @@
     "securitySchemes": {
       "bearerToken": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
       }
     }
   }

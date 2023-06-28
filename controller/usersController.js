@@ -238,14 +238,12 @@ const getUserByToken = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const token = req.headers.authorization; // Get token from Authorization header
-
+  const token = req.headers.authorization; // Dapatkan token dari header Authorization
+  const tokenWithoutPrefix = token.split(" ")[1];
   const { name, email, phoneNumber, password } = req.body; // Dapatkan data yang akan diperbarui dari body request
 
   // Verifikasi token dan dapatkan ID pengguna
-  const tokenWithoutPrefix = token.split(" ")[1];
-  // Verify the token and get user ID
-  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
+  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Menggunakan secret key yang sesuai
   const userId = decodedToken.id;
 
   // Cari pengguna berdasarkan ID pengguna

@@ -56,14 +56,14 @@ const login = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, "admin doesn't exist");
   }
 
-  // check password admin, jika success login dapat response intinya TOKEN
+  // check password user, jika success login dapat response intinya TOKEN
   if (admin && bcrypt.compareSync(password, admin.password)) {
-    // generate token utk admin yg success login
+    // generate token utk user yg success login
     const token = jwt.sign(
       {
-        id: user.id,
-        username: user.name,
-        email: user.email,
+        id: admin.id,
+        username: admin.name,
+        email: admin.email,
       },
       "rahasia"
     );
@@ -71,8 +71,8 @@ const login = catchAsync(async (req, res) => {
     res.status(200).json({
       status: "Success",
       data: {
-        username: user.name,
-        email: user.email,
+        username: admin.name,
+        email: admin.email,
         token,
       },
     });
