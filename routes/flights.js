@@ -11,6 +11,7 @@ router.get("/:id", flightController.getFlightById);
 router.get("/", flightController.getFlight);
 router.put("/:id", flightController.updateFlight);
 router.delete("/:id", flightController.deleteFlight);
-router.get("/search/:depart/:arrive", flightController.getFlightByAirport)
+router.get("/search/:depart/:arrive", flightController.getFlightByAirport);
+router.get("/", flightController.getFlightByQuery);
 
 module.exports = router;

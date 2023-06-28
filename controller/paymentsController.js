@@ -1,113 +1,74 @@
-const { payments } = require("../models");
+const midtransClient = require("midtrans-client");
 const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 
-//CREATE
-const createPayments = catchAsync(async (req, res) => {
-  const { booking_id, payment_method, payment_amount, payment_date } = req.body;
+// Konfigurasi kredensial Midtrans
+const midtransConfig = {
+  serverKey: "SB-Mid-server-DfPpRmhsVXM_ZvQ2IzcHYsz1", // Ganti dengan Server Key Midtrans Anda
+  clientKey: "SB-Mid-client-ugxqLh-00hfHCHIz", // Ganti dengan Client Key Midtrans Anda
+  isProduction: false, // Ganti menjadi true jika ingin menggunakan mode produksi
+};
 
-  const newPayments = await payments.create({
-    booking_id,
-    payment_method,
-    payment_amount,
-    payment_date,
-  });
+// Membuat instance dari MidtransClient
+const midtrans = new midtransClient.CoreApi(midtransConfig);
 
-  res.status(201).json({
-    status: "success",
-    data: {
-      payments: newPayments,
-    },
-  });
-});
+// CREATE
+const createPayment = catchAsync(async (req, res) => {
+  const { booking_id, payment_amount, payment_method } = req.body;
 
-// UPDATE
-const updatePayment = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const { booking_id, payment_method, payment_amount, payment_date } = req.body;
+  // Menyiapkan data pembayaran untuk dikirim ke Midtrans
+  const transactionDetails = {
+    orderId: booking_id,
+    grossAmount: payment_amount,
+  };
 
-  const payment = await payments.findByPk(id);
+  // Menyiapkan item pembayaran (opsional, jika ada)
+  const items = [];
 
-  if (!payment) {
-    throw new ApiError(404, `Pembayaran dengan id ${id} tidak ditemukan`);
+  // Membuat objek transaksi untuk dikirim ke Midtrans
+  const transaction = {
+    transactionDetails,
+    itemDetails: items,
+    payment_type: payment_method,
+  };
+
+  try {
+    // Membuat transaksi pembayaran menggunakan Midtrans
+    const response = await midtrans.charge(transaction);
+
+    res.status(200).json({
+      status: "success",
+      data: {
+        transactionId: response.transaction_id,
+        redirectUrl: response.redirect_url,
+      },
+    });
+  } catch (error) {
+    throw new ApiError(500, "Gagal membuat pembayaran menggunakan Midtrans");
   }
-
-  payment.booking_id = booking_id;
-  payment.payment_method = payment_method;
-  payment.payment_amount = payment_amount;
-  payment.payment_date = payment_date;
-
-  await payment.save();
-
-  res.status(200).json({
-    status: "success",
-    data: {
-      payment,
-    },
-  });
 });
 
-//GET ALL
-const findAllPayments = catchAsync(async (req, res) => {
-  const paymentsData = await payments.findAll();
-  res.status(200).json({
-    status: "success",
-    data: {
-      payments: paymentsData,
-    },
-  });
-});
+// GET TRANSACTION STATUS
+const getTransactionStatus = catchAsync(async (req, res) => {
+  const { transactionId } = req.params;
 
-//GET BY ID
-const findPaymentsById = catchAsync(async (req, res) => {
-  const id = req.params.id;
-  const payment = await payments.findByPk(id);
+  try {
+    // Mendapatkan status transaksi dari Midtrans
+    const response = await midtrans.transaction.status(transactionId);
 
-  if (!payment) {
-    throw new ApiError(
-      httpStatus.NOT_FOUND,
-      `Pembayaran dengan id ${id} tidak ditemukan`
-    );
+    res.status(200).json({
+      status: "success",
+      data: {
+        transactionStatus: response.transaction_status,
+      },
+    });
+  } catch (error) {
+    throw new ApiError(500, "Gagal mendapatkan status transaksi dari Midtrans");
   }
-
-  res.status(200).json({
-    status: "Success",
-    data: {
-      payment,
-    },
-  });
-});
-
-//DELETE
-const deletePayments = catchAsync(async (req, res) => {
-  const id = req.params.id;
-
-  const payment = await payments.findByPk(id);
-
-  if (!payment) {
-    throw new ApiError(
-      httpStatus.NOT_FOUND,
-      `Pembayaran dengan id ${id} tidak ditemukan`
-    );
-  }
-
-  await payments.destroy({
-    where: {
-      id,
-    },
-  });
-
-  res.status(200).json({
-    status: "Success",
-    message: `Pembayaran dengan id ${id} telah dihapus`,
-  });
 });
 
 module.exports = {
-  createPayments,
-  updatePayment,
-  findAllPayments,
-  findPaymentsById,
-  deletePayments,
+  createPayment,
+  getTransactionStatus,
 };

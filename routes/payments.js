@@ -7,10 +7,7 @@ const paymentsController = require("../controller/paymentsController");
 const Auth = require("../middlewares/authenticate");
 
 // API
-router.post("/", Auth, paymentsController.createPayments);
-router.put("/:id", Auth, paymentsController.updatePayment);
-router.get("/", Auth, paymentsController.findAllPayments);
-router.get("/:id", Auth, paymentsController.findPaymentsById);
-router.delete("/:id", Auth, paymentsController.deletePayments);
+router.post("/", Auth, paymentsController.createPayment);
+router.get("/", Auth, paymentsController.getTransactionStatus);
 
 module.exports = router;
