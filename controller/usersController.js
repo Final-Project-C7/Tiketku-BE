@@ -20,50 +20,65 @@ const sendOTPByEmail = require("../services/sendEmailOtp");
 const sendEmailResetPassword = require("../services/sendEmailResetPassword");
 
 const register = catchAsync(async (req, res) => {
-  const { name, password, email, phoneNumber } = req.body;
+  try {
+    const { name, password, email, phoneNumber } = req.body;
 
-  // validation if email is already in use
-  const user = await users.findOne({ where: { email: email } });
-  if (user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Email already exists!");
+    // validation if email is already in use
+    const user = await users.findOne({ where: { email: email } });
+    if (user) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email already exists!");
+    }
+
+    // validation for minimum password length
+    const passwordLength = password.length >= 8;
+    if (!passwordLength) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "Minimum password length must be 8 characters or more"
+      );
+    }
+
+    // encrypt password
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // generate OTP
+    const otp = generateOTP();
+
+    // send OTP via email
+    await sendOTPByEmail(email, otp); // Make sure you have implemented this function
+
+    // register new user
+    const newUser = await users.create({
+      name,
+      password: hashedPassword,
+      email,
+      phoneNumber,
+      otp,
+    });
+
+    const newUserResponse = newUser.toJSON();
+    delete newUserResponse.otp;
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        newUserResponse,
+      },
+    });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      res.status(error.statusCode).json({
+        status: error.status,
+        message: error.message, // Mengambil pesan error dari instance ApiError
+      });
+    } else {
+      // Handle other types of errors
+      res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
   }
-
-  // validation for minimum password length
-  const passwordLength = password.length >= 8;
-  if (!passwordLength) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Minimum password length must be 8 characters or more"
-    );
-  }
-
-  // encrypt password
-  const hashedPassword = bcrypt.hashSync(password, 10);
-
-  // generate OTP
-  const otp = generateOTP();
-
-  // send OTP via email
-  await sendOTPByEmail(email, otp); // Make sure you have implemented this function
-
-  // register new user
-  const newUser = await users.create({
-    name,
-    password: hashedPassword,
-    email,
-    phoneNumber,
-    otp,
-  });
-
-  const newUserResponse = newUser.toJSON();
-  delete newUserResponse.otp;
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      newUserResponse,
-    },
-  });
 });
 
 const login = catchAsync(async (req, res) => {
@@ -136,6 +151,7 @@ const generateLink = catchAsync(async (req, res) => {
   await user.save();
 
   // Generate the reset password link
+  // const resetPasswordLink = `c7-tiketku.up.railway.app/api/v1/user/reset-password`;
   const resetPasswordLink = `c7-tiketku.up.railway.app/api/v1/user/reset-password`;
 
   // Send the reset password link via email
