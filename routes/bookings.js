@@ -9,7 +9,7 @@ const Auth = require("../middlewares/authenticate");
 // API
 router.post("/", Auth, bookingsController.createBookings);
 router.get("/:id", Auth, bookingsController.getBookingsById);
-router.get("/", Auth, bookingsController.findAllBooking);
+router.get("/", bookingsController.findAllBooking);
 router.put("/:id", Auth, bookingsController.updateBooking);
 router.delete("/:id", Auth, bookingsController.deleteBooking);
 

@@ -1,6 +1,14 @@
 const httpStatus = require("http-status");
 
-const { bookings, passengers, payments, seats } = require("../models");
+const {
+  airports,
+  bookings,
+  passengers,
+  payments,
+  flights,
+  airlines,
+  seats,
+} = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
@@ -25,7 +33,46 @@ const createBookings = catchAsync(async (req, res) => {
 
 //GET ALL
 const findAllBooking = catchAsync(async (req, res) => {
-  const bookingsData = await bookings.findAll();
+  const bookingsData = await bookings.findAll({
+    include: [
+      {
+        model: passengers,
+        attributes: [
+          "id",
+          "name",
+          "born_date",
+          "citizen",
+          "identity_number",
+          "publisher_country",
+          "valid_until",
+          "booking_id",
+        ],
+      },
+      {
+        model: payments, // Include tabel "payments"
+        attributes: ["id", "payment_method", "payment_amount", "payment_date"],
+      },
+      {
+        model: flights, // Include tabel "flights"
+        include: [
+          {
+            model: airlines, // Include tabel "airlines" dalam flights
+            attributes: ["airline_name", "baggage", "cabin_baggage"],
+          },
+          {
+            model: airports,
+            as: "departureAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+          },
+          {
+            model: airports,
+            as: "arrivalAirport",
+            attributes: ["airport_name", "city", "country", "imgURL"],
+          },
+        ],
+      },
+    ],
+  });
   res.status(200).json({
     status: "success",
     data: {
@@ -38,6 +85,56 @@ const getBookingsById = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await bookings.findByPk(id, {
+      include: [
+        {
+          model: passengers,
+          attributes: [
+            "id",
+            "name",
+            "born_date",
+            "citizen",
+            "identity_number",
+            "publisher_country",
+            "valid_until",
+            "booking_id",
+          ],
+        },
+        {
+          model: payments, // Include tabel "payments"
+          attributes: [
+            "id",
+            "payment_method",
+            "payment_amount",
+            "payment_date",
+          ],
+        },
+      ],
+    });
+
+    if (!data) {
+      throw new ApiError(httpStatus.NOT_FOUND, "Passenger not found");
+    }
+
+    res.status(200).json({
+      status: "success",
+      data,
+    });
+  } catch (err) {
+    res.status(err.statusCode).json({
+      status: "error",
+      message: err.message,
+    });
+  }
+};
+
+const getBookingsByToken = async (req, res) => {
+  try {
+    const token = req.headers.authorization; // Get token from Authorization header
+    const tokenWithoutPrefix = token.split(" ")[1];
+    // Verify the token and get user ID
+    const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
+    const userId = decodedToken.id;
+    const data = await bookings.findByPk(userId, {
       include: [
         {
           model: passengers,
@@ -133,4 +230,5 @@ module.exports = {
   getBookingsById,
   updateBooking,
   deleteBooking,
+  getBookingsByToken,
 };
