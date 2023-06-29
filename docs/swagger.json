@@ -115,6 +115,127 @@
         }
       }
     },
+    "/api/v1/user/user-info": {
+      "get": {
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerToken": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get User by Token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newUsers": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "name": {
+                              "type": "string",
+                              "example": "Budi"
+                            },
+                            "password": {
+                              "type": "string",
+                              "format": "password",
+                              "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "email": {
+                              "type": "string",
+                              "format": "email",
+                              "example": "Budi123@mail.com"
+                            },
+                            "otp": {
+                              "type": "integer",
+                              "example": 123456
+                            },
+                            "verified": {
+                              "type": "boolean",
+                              "example": true
+                            },
+                            "phoneNumber": {
+                              "type": "string",
+                              "example": "081234567890"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "bookings": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "amount": {
+                                    "type": "integer",
+                                    "example": 250000
+                                  },
+                                  "flight_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "order_date": {
+                                    "type": "string",
+                                    "example": "1945-08-17T00:00:00.000Z"
+                                  },
+                                  "user_id": {
+                                    "type": "integer",
+                                    "example": 1
+                                  },
+                                  "flight": {
+                                    "type": "object",
+                                    "properties": {
+                                      "airline_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                      },
+                                      "departure": {
+                                        "type": "integer",
+                                        "example": 1
+                                      },
+                                      "arrival": {
+                                        "type": "integer",
+                                        "example": 1
+                                      },
+                                      "firstClass_price": {
+                                        "type": "integer",
+                                        "example": 550000
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/user/register": {
       "post": {
         "tags": ["Users"],
@@ -1629,6 +1750,10 @@
                               "type": "integer",
                               "example": 1
                             },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
                             "economyClass_price": {
                               "type": "integer",
                               "example": 250000
@@ -2266,6 +2391,194 @@
                     "message": {
                       "type": "string",
                       "example": "flights with this id 1 is not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/flight/search/{depart}/{arrive}": {
+      "get": {
+        "tags": ["Flights"],
+        "parameters": [
+          {
+            "name": "depart",
+            "in": "path",
+            "description": "depart of Flight to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "arrive",
+            "in": "path",
+            "description": "arrive of Flight to return",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success get Flight by depart & arrive",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "Success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "newFlights": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "airline_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "flight_code": {
+                              "type": "integer",
+                              "example": 112
+                            },
+                            "departure": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "arrival": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "seat_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "admin_id": {
+                              "type": "integer",
+                              "example": 1
+                            },
+                            "economyClass_price": {
+                              "type": "integer",
+                              "example": 250000
+                            },
+                            "premiumEconomy_price": {
+                              "type": "integer",
+                              "example": 350000
+                            },
+                            "business_price": {
+                              "type": "integer",
+                              "example": 450000
+                            },
+                            "firstClass_price": {
+                              "type": "integer",
+                              "example": 550000
+                            },
+                            "departure_time": {
+                              "type": "date",
+                              "example": "1945-08-17T00:00:00.000Z"
+                            },
+                            "arrival_time": {
+                              "type": "date",
+                              "example": "1945-08-17T00:00:00.000Z"
+                            },
+                            "updatedAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "createdAt": {
+                              "type": "date",
+                              "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "departureAirport": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "airport_name": {
+                                  "type": "string",
+                                  "example": "Soekarno-Hatta International Airport"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "Jakarta"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Indonesia"
+                                },
+                                "imgURL": {
+                                  "type": "string",
+                                  "example": "https://ik.imagekit.io/test123/IMG-1686821195784_SpKO5Y1Ml.png"
+                                },
+                                "updatedAt": {
+                                  "type": "date",
+                                  "example": "2022-10-17T14:04:48.389Z"
+                                },
+                                "createdAt": {
+                                  "type": "date",
+                                  "example": "2022-10-17T14:04:48.389Z"
+                                }
+                              }
+                            },
+                            "arrivalAirport": {
+                              "type": "object",
+                              "properties": {
+                                "id": {
+                                  "type": "integer",
+                                  "example": 1
+                                },
+                                "airport_name": {
+                                  "type": "string",
+                                  "example": "Soekarno-Hatta International Airport"
+                                },
+                                "city": {
+                                  "type": "string",
+                                  "example": "Jakarta"
+                                },
+                                "country": {
+                                  "type": "string",
+                                  "example": "Indonesia"
+                                },
+                                "imgURL": {
+                                  "type": "string",
+                                  "example": "https://ik.imagekit.io/test123/IMG-1686821195784_SpKO5Y1Ml.png"
+                                },
+                                "updatedAt": {
+                                  "type": "date",
+                                  "example": "2022-10-17T14:04:48.389Z"
+                                },
+                                "createdAt": {
+                                  "type": "date",
+                                  "example": "2022-10-17T14:04:48.389Z"
+                                }
+                              }
+                            },
+                            "airline": {
+                              "type": "object",
+                              "properties": {
+                                "airline_name": {
+                                  "type": "string",
+                                  "example": "Emirates"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
