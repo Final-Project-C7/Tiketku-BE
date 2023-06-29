@@ -1,6 +1,8 @@
 const { flights, airlines, airports, admins } = require("../models");
 
 const catchAsync = require("../utils/catchAsync");
+const moment = require("moment");
+const { Op } = require("sequelize");
 
 async function createFlights(req, res) {
   try {
@@ -86,9 +88,13 @@ async function getFlight(req, res) {
 
     let data;
 
-    if (req.query.departure && req.query.arrival) {
-      const { departure, arrival } = req.query;
-
+    const { departure, arrival, departure_time } = req.query;
+    if ((departure && arrival) || departure_time) {
+      const formattedDepartureTime = moment(
+        departure_time,
+        "DD-MM-YYYY"
+      ).format("YYYY-MM-DD");
+      console.log(formattedDepartureTime);
       data = await flights.findAll({
         include: [
           {
@@ -108,6 +114,14 @@ async function getFlight(req, res) {
             where: { city: arrival },
           },
         ],
+        where: {
+          departure_time: {
+            [Op.gte]: formattedDepartureTime,
+            [Op.lt]: moment(formattedDepartureTime)
+              .add(1, "days")
+              .format("YYYY-MM-DD"),
+          },
+        },
       });
     } else {
       data = await flights.findAll({
