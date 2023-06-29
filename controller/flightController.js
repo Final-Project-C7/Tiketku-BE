@@ -60,12 +60,12 @@ async function getFlightById(req, res) {
         },
         {
           model: airports,
-          as: 'departureAirport',
+          as: "departureAirport",
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
         {
           model: airports,
-          as: 'arrivalAirport',
+          as: "arrivalAirport",
           attributes: ["airport_name", "city", "country", "imgURL"],
         },
       ],
@@ -85,11 +85,10 @@ async function getFlightById(req, res) {
 
 async function getFlight(req, res) {
   try {
-
     let data;
 
     const { departure, arrival, departure_time } = req.query;
-    if (departure || (arrival && departure_time)) {
+    if (departure || departure_time || arrival) {
       const formattedDepartureTime = moment(
         departure_time,
         "DD-MM-YYYY"
@@ -299,18 +298,18 @@ async function getFlightByAirport(req, res) {
       include: [
         {
           model: airports,
-          as: 'departureAirport',
-          where: { city: depart }
+          as: "departureAirport",
+          where: { city: depart },
         },
         {
           model: airports,
-          as: 'arrivalAirport',
-          where: { city: arrive }
+          as: "arrivalAirport",
+          where: { city: arrive },
         },
         {
           model: airlines,
-        }
-      ]
+        },
+      ],
     });
 
     res.status(200).json({
@@ -334,8 +333,5 @@ module.exports = {
 
   getFlightByAirport,
 
-
-  getFlightByAirport
-
-
+  getFlightByAirport,
 };
