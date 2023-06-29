@@ -7,39 +7,54 @@ const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 
 const register = catchAsync(async (req, res) => {
-  const { name, password, email } = req.body;
+  try {
+    const { name, password, email } = req.body;
 
-  // validasi jika email sudah kepake
-  const user = await admins.findOne({ where: { email: email } });
-  if (user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "email already exist!");
+    // validasi jika email sudah kepake
+    const user = await admins.findOne({ where: { email: email } });
+    if (user) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Email already exists!");
+    }
+
+    // validasi minimum password length
+    const passwordLength = password.length >= 8;
+    if (!passwordLength) {
+      throw new ApiError(
+        httpStatus.BAD_REQUEST,
+        "Minimum password length must be 8 characters or more"
+      );
+    }
+
+    // enkripsi password
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // register user baru
+    const newAdmin = await admins.create({
+      name,
+      password: hashedPassword,
+      email,
+    });
+
+    res.status(201).json({
+      status: "success",
+      data: {
+        newAdmin,
+      },
+    });
+  } catch (error) {
+    if (error instanceof ApiError) {
+      res.status(error.statusCode).json({
+        status: error.status,
+        message: error.message, // Mengambil pesan error dari instance ApiError
+      });
+    } else {
+      // Handle other types of errors
+      res.status(500).json({
+        status: "error",
+        message: "Internal Server Error",
+      });
+    }
   }
-
-  // validasi minimum password length
-  const passswordLength = password.length <= 8;
-  if (passswordLength) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "minimum password length must be 8 charater or more"
-    );
-  }
-
-  // enkripsi password
-  const hashedPassword = bcrypt.hashSync(password, 10);
-
-  // register user baru
-  const newAdmin = await admins.create({
-    name,
-    password: hashedPassword,
-    email,
-  });
-
-  res.status(201).json({
-    status: "success",
-    data: {
-      newAdmin,
-    },
-  });
 });
 
 const login = catchAsync(async (req, res) => {
