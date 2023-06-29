@@ -88,7 +88,7 @@ async function getFlight(req, res) {
     let data;
 
     const { departure, arrival, departure_time } = req.query;
-    if ((departure && arrival) || departure_time) {
+    if (departure || (arrival && departure_time)) {
       const formattedDepartureTime = moment(
         departure_time,
         "DD-MM-YYYY"
