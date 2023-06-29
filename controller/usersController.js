@@ -3,6 +3,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const generateRandomToken = require("../services/generateRandomToken");
 const Authentication = require("../middlewares/authenticate");
+const imagekit = require("../lib/imageKits");
 
 const {
   users,
@@ -238,23 +239,21 @@ const getUserByToken = catchAsync(async (req, res) => {
 });
 
 const updateUser = catchAsync(async (req, res) => {
-  const token = req.headers.authorization; // Dapatkan token dari header Authorization
+  const token = req.headers.authorization;
   const tokenWithoutPrefix = token.split(" ")[1];
-  const { name, email, phoneNumber, password } = req.body; // Dapatkan data yang akan diperbarui dari body request
+  const { name, email, phoneNumber, password } = req.body;
+  const file = req.file; // Dapatkan file gambar dari request
 
-  // Verifikasi token dan dapatkan ID pengguna
-  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Menggunakan secret key yang sesuai
+  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia");
   const userId = decodedToken.id;
 
-  // Cari pengguna berdasarkan ID pengguna
   const user = await users.findByPk(userId);
 
-  // Jika pengguna tidak ditemukan
   if (!user) {
     throw new ApiError(httpStatus.NOT_FOUND, "User not found");
   }
 
-  // Memeriksa keabsahan pengguna yang ingin melakukan pembaruan
+  // Verifikasi keabsahan pengguna yang ingin melakukan pembaruan
   // Misalnya, Anda dapat memeriksa peran pengguna atau kondisi lainnya
 
   // Perbarui data pengguna
@@ -266,6 +265,28 @@ const updateUser = catchAsync(async (req, res) => {
   if (password) {
     const hashedPassword = bcrypt.hashSync(password, 10);
     user.password = hashedPassword;
+  }
+
+  // Jika ada file gambar yang diunggah, lakukan validasi format file dan proses upload
+  if (file) {
+    const validFormat =
+      file.mimetype == "image/png" ||
+      file.mimetype == "image/jpg" ||
+      file.mimetype == "image/jpeg" ||
+      file.mimetype == "image/gif";
+    if (!validFormat) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Wrong Image Format");
+    }
+
+    const split = file.originalname.split(".");
+    const ext = split[split.length - 1];
+
+    const img = await imagekit.upload({
+      file: file.buffer,
+      fileName: `IMG-${Date.now()}.${ext}`,
+    });
+
+    user.image = img.url;
   }
 
   await user.save();
