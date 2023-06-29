@@ -76,15 +76,15 @@ const login = catchAsync(async (req, res) => {
     },
   });
 
-  // // gagal melanjutkan karena username nya tidak ada
-  // if (!user) {
-  //   throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist");
-  // }
+  // gagal melanjutkan karena username nya tidak ada
+  if (!user) {
+    throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist");
+  }
 
-  // // check status verifikasi pengguna
-  // if (!user.verified) {
-  //   throw new ApiError(httpStatus.UNAUTHORIZED, "User is not verified");
-  // }
+  // check status verifikasi pengguna
+  if (!user.verified) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, "User is not verified");
+  }
 
   // check password user, jika success login dapat response intinya TOKEN
   if (user && bcrypt.compareSync(password, user.password)) {
