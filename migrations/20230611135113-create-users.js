@@ -21,6 +21,9 @@ module.exports = {
       otp: {
         type: Sequelize.INTEGER,
       },
+      image: {
+        type: Sequelize.TEXT,
+      },
       verified: {
         type: Sequelize.BOOLEAN,
       },
