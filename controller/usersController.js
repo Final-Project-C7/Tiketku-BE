@@ -343,7 +343,7 @@ const updateUser = catchAsync(async (req, res) => {
       file.mimetype == "image/gif";
     if (!validFormat) {
       throw new ApiError(httpStatus.BAD_REQUEST, "Wrong Image Format");
-    }
+    } //image
 
     const split = file.originalname.split(".");
     const ext = split[split.length - 1];
