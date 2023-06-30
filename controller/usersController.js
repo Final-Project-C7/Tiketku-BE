@@ -138,11 +138,16 @@ const generateLink = catchAsync(async (req, res) => {
 
   // If user doesn't exist
   if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    return res.status(httpStatus.NOT_FOUND).json({
+      status: "error",
+      message: "User not found",
+    });
   }
 
   // Generate reset token
-  const resetToken = generateRandomToken();
+  const resetToken = jwt.sign({ email: user.email }, "rahasia", {
+    expiresIn: "1h",
+  }); // Replace 'your_secret_key' with your actual secret key
 
   // Set reset password token and expiration time
   user.resetPasswordToken = resetToken;
@@ -150,8 +155,7 @@ const generateLink = catchAsync(async (req, res) => {
   await user.save();
 
   // Generate the reset password link
-  // const resetPasswordLink = `c7-tiketku.up.railway.app/api/v1/user/reset-password`;
-  const resetPasswordLink = `c7-tiketku.up.railway.app/api/v1/user/reset-password`;
+  const resetPasswordLink = `https://travelesia-fe-production.up.railway.app/reset-password?token=${resetToken}`;
 
   // Send the reset password link via email
   await sendEmailResetPassword(user.email, resetPasswordLink); // Make sure you have implemented this function
@@ -160,6 +164,50 @@ const generateLink = catchAsync(async (req, res) => {
     status: "success",
     message: "Reset password link has been sent to your email",
   });
+});
+
+const resetPasswordToken = catchAsync(async (req, res) => {
+  const { token, password } = req.body;
+
+  try {
+    // Verify and decode the reset token
+    const decodedToken = jwt.verify(token, "rahasia"); // Replace 'your_secret_key' with your actual secret key
+
+    // Retrieve the email from the decoded token
+    const email = decodedToken.email;
+
+    // Find user by email
+    const user = await users.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (!user) {
+      throw new ApiError(httpStatus.NOT_FOUND, "User doesn't exist");
+    }
+
+    // Check if token has expired
+    if (Date.now() > user.resetPasswordExpires) {
+      throw new ApiError(httpStatus.BAD_REQUEST, "Token has expired");
+    }
+
+    // Encrypt the new password
+    const hashedPassword = bcrypt.hashSync(password, 10);
+
+    // Update user's password
+    user.password = hashedPassword;
+    await user.save();
+
+    res.status(200).json({
+      status: "success",
+      message: "Password has been reset",
+    });
+  } catch (error) {
+    // Handle token verification or decoding errors
+    // For example, if the token is expired or invalid
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid or expired token");
+  }
 });
 
 const resetPassword = catchAsync(async (req, res) => {
@@ -330,4 +378,5 @@ module.exports = {
   verifyOTP,
   generateLink,
   resetPassword,
+  resetPasswordToken,
 };
