@@ -3,6 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 const { StatusCodes } = require("http-status-codes");
+const { bookings, passengers, payments, users } = require("../models");
 
 // Konfigurasi kredensial Midtrans
 
@@ -13,19 +14,22 @@ let snap = new midtransClient.Snap({
 });
 
 const createPayment = catchAsync(async (req, res) => {
+  const { order_id, gross_amount, first_name, last_name, email, phone } =
+    req.body;
+
   let parameter = {
     transaction_details: {
-      order_id: "YOUR-ORDERID-123456",
-      gross_amount: 200000,
+      order_id: order_id,
+      gross_amount: gross_amount,
     },
     credit_card: {
       secure: true,
     },
     customer_details: {
-      first_name: "budi",
-      last_name: "pratama",
-      email: "ferdy.yukiri@gmail.com",
-      phone: "08111222333",
+      first_name: first_name,
+      last_name: last_name,
+      email: email,
+      phone: phone,
     },
   };
 
@@ -34,7 +38,9 @@ const createPayment = catchAsync(async (req, res) => {
   console.log("transactionToken:", transactionToken);
 
   // Return the transaction token or use it as needed
-  res.status(StatusCodes.OK).json({ transactionToken });
+  res
+    .status(StatusCodes.OK)
+    .json(`https://app.sandbox.midtrans.com/snap/v2/vtweb/${transactionToken}`);
 });
 
 // GET TRANSACTION STATUS
