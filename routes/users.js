@@ -19,6 +19,7 @@ router.put(
 );
 router.post("/generate-password", User.generateLink);
 router.put("/reset-password", User.resetPassword);
+router.put("/reset-password-token", User.resetPasswordToken);
 router.delete("/:id", User.deleteUser);
 router.get("/", User.getAllUsers);
 router.get("/user-info", Authentication, User.getUserByToken);
