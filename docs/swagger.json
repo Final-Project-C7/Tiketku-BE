@@ -78,6 +78,10 @@
                               "format": "password",
                               "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
                             },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
+                            },
                             "email": {
                               "type": "string",
                               "format": "email",
@@ -153,6 +157,10 @@
                               "type": "string",
                               "format": "password",
                               "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
                             },
                             "email": {
                               "type": "string",
@@ -313,12 +321,16 @@
                             "createdAt": {
                               "type": "date",
                               "example": "2022-10-17T14:04:48.389Z"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": null
+                            },
+                            "verified": {
+                              "type": "boolean",
+                              "example": null
                             }
                           }
-                        },
-                        "otp": {
-                          "type": "string",
-                          "example": "123456"
                         }
                       }
                     }
@@ -594,7 +606,7 @@
         "requestBody": {
           "description": "Success edit User",
           "content": {
-            "application/json": {
+            "multipart/form-data": {
               "schema": {
                 "type": "object",
                 "properties": {
@@ -615,6 +627,10 @@
                   "phoneNumber": {
                     "type": "string",
                     "example": "081234567890"
+                  },
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               }
@@ -651,6 +667,10 @@
                               "type": "string",
                               "format": "password",
                               "example": "$2b$10$pg0ivHyurpBkVjUkO5LDUegnyP42nC3bPdNOk0ECaT0zsdgDiHASa"
+                            },
+                            "image": {
+                              "type": "string",
+                              "example": "https://ik.imagekit.io/test123/IMG-1685202069643_V3uz9HkYJ.png"
                             },
                             "email": {
                               "type": "string",
