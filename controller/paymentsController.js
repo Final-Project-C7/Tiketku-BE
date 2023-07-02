@@ -8,16 +8,23 @@ const { bookings, passengers, payments, users } = require("../models");
 // Konfigurasi kredensial Midtrans
 
 let snap = new midtransClient.Snap({
-  // Set to true if you want Production Environment (accept real transaction).
   isProduction: false,
   serverKey: "SB-Mid-server-DfPpRmhsVXM_ZvQ2IzcHYsz1",
 });
 
 const createPayment = catchAsync(async (req, res) => {
-  const { order_id, gross_amount, first_name, last_name, email, phone } =
-    req.body;
+  const {
+    order_id,
+    gross_amount,
+    first_name,
+    last_name,
+    email,
+    phone,
+    payment_type,
+  } = req.body;
 
   let parameter = {
+    payment_type: payment_type,
     transaction_details: {
       order_id: order_id,
       gross_amount: gross_amount,
@@ -38,9 +45,36 @@ const createPayment = catchAsync(async (req, res) => {
   console.log("transactionToken:", transactionToken);
 
   // Return the transaction token or use it as needed
+  const payment = await payments.create({
+    booking_id: order_id,
+    payment_amount: gross_amount,
+    payment_method: null,
+  });
+
   res
     .status(StatusCodes.OK)
     .json(`https://app.sandbox.midtrans.com/snap/v2/vtweb/${transactionToken}`);
+});
+
+const handlePaymentNotification = catchAsync(async (req, res) => {
+  // Terima payload notifikasi dari Midtrans
+  const notification = req.body;
+
+  // Lakukan verifikasi keaslian notifikasi
+  // Pastikan Anda mengikuti panduan resmi Midtrans untuk melakukan verifikasi ini
+
+  // Dapatkan payment_method dari payload notifikasi
+  const paymentMethod = notification.payment_type;
+
+  // Lakukan tindakan sesuai kebutuhan bisnis Anda
+  // Misalnya, simpan payment_method ke dalam database
+  await payments.update(
+    { payment_method: paymentMethod },
+    { where: { order_id: notification.order_id } }
+  );
+
+  // Berikan respons OK kepada Midtrans
+  res.status(200).send("OK");
 });
 
 // GET TRANSACTION STATUS
@@ -68,4 +102,5 @@ const getTransactionStatus = catchAsync(async (req, res) => {
 module.exports = {
   createPayment,
   getTransactionStatus,
+  handlePaymentNotification,
 };
