@@ -59,6 +59,7 @@ const createPayment = catchAsync(async (req, res) => {
 const handlePaymentNotification = catchAsync(async (req, res) => {
   // Terima payload notifikasi dari Midtrans
   const notification = req.body;
+  console.log(notification);
 
   // Lakukan verifikasi keaslian notifikasi
   // Pastikan Anda mengikuti panduan resmi Midtrans untuk melakukan verifikasi ini
@@ -68,7 +69,7 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
 
   // Lakukan tindakan sesuai kebutuhan bisnis Anda
   // Misalnya, simpan payment_method ke dalam database
-  await payments.update(
+  await payments.create(
     { payment_method: paymentMethod },
     { where: { order_id: notification.order_id } }
   );
