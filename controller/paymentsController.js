@@ -49,6 +49,7 @@ const createPayment = catchAsync(async (req, res) => {
     booking_id: order_id,
     payment_amount: gross_amount,
     payment_method: null,
+    payment_date: transaction_time,
   });
 
   res
@@ -57,21 +58,14 @@ const createPayment = catchAsync(async (req, res) => {
 });
 
 const handlePaymentNotification = catchAsync(async (req, res) => {
-  // Terima payload notifikasi dari Midtrans
   const notification = req.body;
   console.log(notification);
 
-  // Lakukan verifikasi keaslian notifikasi
-  // Pastikan Anda mengikuti panduan resmi Midtrans untuk melakukan verifikasi ini
-
-  // Dapatkan payment_method dari payload notifikasi
   const paymentMethod = notification.payment_type;
 
-  // Lakukan tindakan sesuai kebutuhan bisnis Anda
-  // Misalnya, simpan payment_method ke dalam database
   await payments.create(
     { payment_method: paymentMethod },
-    { where: { order_id: notification.order_id } }
+    { where: { booking_id: notification.order_id } }
   );
 
   // Berikan respons OK kepada Midtrans
