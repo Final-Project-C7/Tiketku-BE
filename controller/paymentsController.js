@@ -4,6 +4,7 @@ const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 const { StatusCodes } = require("http-status-codes");
 const { bookings, passengers, payments, users } = require("../models");
+const jwt = require("jsonwebtoken");
 
 // Konfigurasi kredensial Midtrans
 
@@ -13,30 +14,35 @@ let snap = new midtransClient.Snap({
 });
 
 const createPayment = catchAsync(async (req, res) => {
-  const {
-    order_id,
-    gross_amount,
-    first_name,
-    last_name,
-    email,
-    phone,
-    payment_type,
-  } = req.body;
+  const { order_id, gross_amount, first_name, email, phone, payment_type } =
+    req.body;
+
+  const token = req.headers.authorization; // Get token from Authorization header
+  const tokenWithoutPrefix = token.split(" ")[1];
+  // Verify the token and get user ID
+  const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
+  const userId = decodedToken.id;
+  const user = await users.findByPk(userId);
+
+  const booking = await bookings.findOne({
+    where: {
+      user_id: user.id,
+    },
+  });
 
   let parameter = {
     payment_type: payment_type,
     transaction_details: {
-      order_id: order_id,
-      gross_amount: gross_amount,
+      order_id: booking.id,
+      gross_amount: booking.amount,
     },
     credit_card: {
       secure: true,
     },
     customer_details: {
-      first_name: first_name,
-      last_name: last_name,
-      email: email,
-      phone: phone,
+      first_name: user.name,
+      email: user.email,
+      phone: user.phoneNumber,
     },
   };
 
@@ -92,17 +98,15 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
 
 // GET TRANSACTION STATUS
 const getTransactionStatus = catchAsync(async (req, res) => {
-  const { transactionId } = req.params;
-
   try {
     // Mendapatkan status transaksi dari Midtrans
-    const response = await midtrans.transaction.status(transactionId);
+    let data = await payments.findAll({
+      include: { all: true, nested: true },
+    });
 
     res.status(200).json({
       status: "success",
-      data: {
-        transactionStatus: response.transaction_status,
-      },
+      data,
     });
   } catch (error) {
     throw new ApiError(

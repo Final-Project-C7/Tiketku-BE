@@ -11,6 +11,7 @@ const {
 } = require("../models");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
+const jwt = require("jsonwebtoken");
 
 const createBookings = catchAsync(async (req, res) => {
   const { flight_id, order_date, amount } = req.body;
@@ -34,44 +35,7 @@ const createBookings = catchAsync(async (req, res) => {
 //GET ALL
 const findAllBooking = catchAsync(async (req, res) => {
   const bookingsData = await bookings.findAll({
-    include: [
-      {
-        model: passengers,
-        attributes: [
-          "id",
-          "name",
-          "born_date",
-          "citizen",
-          "identity_number",
-          "publisher_country",
-          "valid_until",
-          "booking_id",
-        ],
-      },
-      {
-        model: payments, // Include tabel "payments"
-        attributes: ["id", "payment_method", "payment_amount", "payment_date"],
-      },
-      {
-        model: flights, // Include tabel "flights"
-        include: [
-          {
-            model: airlines, // Include tabel "airlines" dalam flights
-            attributes: ["airline_name", "baggage", "cabin_baggage"],
-          },
-          {
-            model: airports,
-            as: "departureAirport",
-            attributes: ["airport_name", "city", "country", "imgURL"],
-          },
-          {
-            model: airports,
-            as: "arrivalAirport",
-            attributes: ["airport_name", "city", "country", "imgURL"],
-          },
-        ],
-      },
-    ],
+    include: { all: true, nested: true },
   });
   res.status(200).json({
     status: "success",
@@ -85,30 +49,7 @@ const getBookingsById = async (req, res) => {
   try {
     const id = req.params.id;
     const data = await bookings.findByPk(id, {
-      include: [
-        {
-          model: passengers,
-          attributes: [
-            "id",
-            "name",
-            "born_date",
-            "citizen",
-            "identity_number",
-            "publisher_country",
-            "valid_until",
-            "booking_id",
-          ],
-        },
-        {
-          model: payments, // Include tabel "payments"
-          attributes: [
-            "id",
-            "payment_method",
-            "payment_amount",
-            "payment_date",
-          ],
-        },
-      ],
+      include: { all: true, nested: true },
     });
 
     if (!data) {
@@ -134,31 +75,9 @@ const getBookingsByToken = async (req, res) => {
     // Verify the token and get user ID
     const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
     const userId = decodedToken.id;
-    const data = await bookings.findByPk(userId, {
-      include: [
-        {
-          model: passengers,
-          attributes: [
-            "id",
-            "name",
-            "born_date",
-            "citizen",
-            "identity_number",
-            "publisher_country",
-            "valid_until",
-            "booking_id",
-          ],
-        },
-        {
-          model: payments, // Include tabel "payments"
-          attributes: [
-            "id",
-            "payment_method",
-            "payment_amount",
-            "payment_date",
-          ],
-        },
-      ],
+    const data = await bookings.findOne(userId, {
+      where: { userId: userId },
+      include: { all: true, nested: true },
     });
 
     if (!data) {
