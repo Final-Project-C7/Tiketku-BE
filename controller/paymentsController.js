@@ -49,7 +49,7 @@ const createPayment = catchAsync(async (req, res) => {
     booking_id: order_id,
     payment_amount: gross_amount,
     payment_method: null,
-    payment_date: transaction_time,
+    payment_date: null,
   });
 
   res
@@ -58,13 +58,23 @@ const createPayment = catchAsync(async (req, res) => {
 });
 
 const handlePaymentNotification = catchAsync(async (req, res) => {
-  const notification = req.body;
+  let notification = {
+    currency: req.body.currency,
+    fraud_status: req.body.fraud_status,
+    gross_amount: req.body.gross_amount,
+    order_id: req.body.order_id,
+    payment_type: req.body.payment_type,
+    status_code: req.body.status_code,
+    status_message: req.body.status_message,
+    transaction_id: req.body.transaction_id,
+    transaction_status: req.body.transaction_status,
+    transaction_time: req.body.transaction_time,
+  };
   console.log(notification);
 
-  const paymentMethod = notification.payment_type;
-
   await payments.create(
-    { payment_method: paymentMethod },
+    { payment_method: notification.payment_type },
+    { payment_date: notification.transaction_time },
     { where: { booking_id: notification.order_id } }
   );
 
