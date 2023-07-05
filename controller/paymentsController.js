@@ -74,12 +74,16 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
   let data = await snap.transaction.notification(notification);
   console.log(data);
 
-  await payments.create(
-    { booking_id: data.order_id },
-    { payment_amount: data.gross_amount },
-    { payment_method: data.payment_type },
-    { payment_date: data.transaction_time },
-    { where: { booking_id: data.order_id } }
+  await payments.update(
+    {
+      payment_method: data.payment_type,
+      payment_date: data.transaction_time,
+    },
+    {
+      where: {
+        booking_id: data.order_id,
+      },
+    }
   );
 
   // Berikan respons OK kepada Midtrans
