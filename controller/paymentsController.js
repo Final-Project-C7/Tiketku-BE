@@ -45,12 +45,7 @@ const createPayment = catchAsync(async (req, res) => {
   console.log("transactionToken:", transactionToken);
 
   // Return the transaction token or use it as needed
-  const payment = await payments.create({
-    booking_id: order_id,
-    payment_amount: gross_amount,
-    payment_method: null,
-    payment_date: null,
-  });
+  
 
   res
     .status(StatusCodes.OK)
