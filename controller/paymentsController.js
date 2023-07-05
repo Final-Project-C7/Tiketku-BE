@@ -26,8 +26,6 @@ const createPayment = catchAsync(async (req, res) => {
 
   const booking = await bookings.findByPk(order_id);
 
-  console.log(booking);
-
   let parameter = {
     payment_type: payment_type,
     transaction_details: {
@@ -46,17 +44,18 @@ const createPayment = catchAsync(async (req, res) => {
 
   const transaction = await snap.createTransaction(parameter);
   const transactionToken = transaction.token;
-  console.log("transactionToken:", transactionToken);
 
   // Return the transaction token or use it as needed
   const payment = await payments.create({
     booking_id: order_id,
-    payment_amount: gross_amount,
+    payment_amount: booking.amount,
     payment_method: null,
     payment_date: null,
     payment_status: null,
     payment_code: null,
   });
+
+  console.log(payment);
 
   res
     .status(StatusCodes.OK)
