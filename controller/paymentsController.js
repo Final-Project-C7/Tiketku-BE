@@ -24,11 +24,9 @@ const createPayment = catchAsync(async (req, res) => {
   const userId = decodedToken.id;
   const user = await users.findByPk(userId);
 
-  const booking = await bookings.findOne({
-    where: {
-      user_id: user.id,
-    },
-  });
+  const booking = await bookings.findByPk(order_id);
+
+  console.log(booking);
 
   let parameter = {
     payment_type: payment_type,
