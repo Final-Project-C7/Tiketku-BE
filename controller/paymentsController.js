@@ -75,6 +75,8 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
   console.log(data);
 
   await payments.create(
+    { booking_id: data.order_id },
+    { payment_amount: data.gross_amount },
     { payment_method: data.payment_type },
     { payment_date: data.transaction_time },
     { where: { booking_id: data.order_id } }
