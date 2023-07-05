@@ -45,7 +45,12 @@ const createPayment = catchAsync(async (req, res) => {
   console.log("transactionToken:", transactionToken);
 
   // Return the transaction token or use it as needed
-  
+  const payment = await payments.create({
+    booking_id: order_id,
+    payment_amount: gross_amount,
+    payment_method: null,
+    payment_date: null,
+  });
 
   res
     .status(StatusCodes.OK)
@@ -65,13 +70,14 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
     transaction_status: req.body.transaction_status,
     transaction_time: req.body.transaction_time,
   };
-  console.log(notification);
+
+  let data = await snap.transaction.notification(notification);
+  console.log(data);
 
   await payments.create(
-    { payment_amount: notification.gross_amount },
-    { payment_method: notification.payment_type },
-    { payment_date: notification.transaction_time },
-    { where: { booking_id: notification.order_id } }
+    { payment_method: data.payment_type },
+    { payment_date: data.transaction_time },
+    { where: { booking_id: data.order_id } }
   );
 
   // Berikan respons OK kepada Midtrans
