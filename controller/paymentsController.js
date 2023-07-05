@@ -54,6 +54,8 @@ const createPayment = catchAsync(async (req, res) => {
     payment_amount: gross_amount,
     payment_method: null,
     payment_date: null,
+    payment_status: null,
+    payment_code: null,
   });
 
   res
@@ -73,6 +75,7 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
     transaction_id: req.body.transaction_id,
     transaction_status: req.body.transaction_status,
     transaction_time: req.body.transaction_time,
+    merchant_id: req.body.merchant_id,
   };
 
   let data = await snap.transaction.notification(notification);
@@ -82,6 +85,8 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
     {
       payment_method: data.payment_type,
       payment_date: data.transaction_time,
+      payment_status: data.transaction_status,
+      payment_code: data.merchant_id,
     },
     {
       where: {
