@@ -44,14 +44,6 @@ const createPayment = catchAsync(async (req, res) => {
   const transactionToken = transaction.token;
   console.log("transactionToken:", transactionToken);
 
-  // Return the transaction token or use it as needed
-  const payment = await payments.create({
-    booking_id: null,
-    payment_amount: null,
-    payment_method: null,
-    payment_date: null,
-  });
-
   res
     .status(StatusCodes.OK)
     .json(`https://app.sandbox.midtrans.com/snap/v2/vtweb/${transactionToken}`);
@@ -76,8 +68,7 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
     { booking_id: notification.order_id },
     { payment_amount: notification.gross_amount },
     { payment_method: notification.payment_type },
-    { payment_date: notification.transaction_time },
-    { where: { booking_id: notification.order_id } }
+    { payment_date: notification.transaction_time }
   );
 
   // Berikan respons OK kepada Midtrans
