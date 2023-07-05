@@ -8,7 +8,7 @@ const Auth = require("../middlewares/authenticate");
 
 // API
 router.post("/", paymentsController.createPayment);
-router.put("/notif", paymentsController.handlePaymentNotification);
+router.post("/notif", paymentsController.handlePaymentNotification);
 // router.get("/", Auth, paymentsController.getTransactionStatus);
 
 module.exports = router;
