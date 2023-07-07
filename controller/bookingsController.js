@@ -34,6 +34,19 @@ const createBookings = catchAsync(async (req, res) => {
 
 //GET ALL
 const findAllBooking = catchAsync(async (req, res) => {
+  const { user_id } = req.query;
+  if (user_id) {
+    const bookingsData = await bookings.findAll({
+      where: { user_id },
+      include: { all: true, nested: true },
+    });
+    res.status(200).json({
+      status: "success",
+      data: {
+        bookings: bookingsData,
+      },
+    });
+  }
   const bookingsData = await bookings.findAll({
     include: { all: true, nested: true },
   });
@@ -53,7 +66,7 @@ const getBookingsById = async (req, res) => {
     });
 
     if (!data) {
-      throw new ApiError(httpStatus.NOT_FOUND, "Passenger not found");
+      throw new ApiError(httpStatus.NOT_FOUND, "booking not found");
     }
 
     res.status(200).json({
@@ -75,8 +88,9 @@ const getBookingsByToken = async (req, res) => {
     // Verify the token and get user ID
     const decodedToken = jwt.verify(tokenWithoutPrefix, "rahasia"); // Use the corresponding secret key
     const userId = decodedToken.id;
+    console.log(userId);
     const data = await bookings.findOne(userId, {
-      where: { userId: userId },
+      where: { user_id: userId },
       include: { all: true, nested: true },
     });
 
