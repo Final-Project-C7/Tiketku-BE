@@ -5,6 +5,7 @@ const httpStatus = require("http-status");
 const { StatusCodes } = require("http-status-codes");
 const { bookings, passengers, payments, users } = require("../models");
 const jwt = require("jsonwebtoken");
+const generateOTP = require("../services/otpGenerator");
 
 // Konfigurasi kredensial Midtrans
 
@@ -24,7 +25,7 @@ const createPayment = catchAsync(async (req, res) => {
   const userId = decodedToken.id;
   const user = await users.findByPk(userId);
 
-  const booking = await bookings.findByPk(order_id);
+  const booking = await bookings.findByPk(66);
 
   let parameter = {
     payment_type: payment_type,
@@ -45,6 +46,8 @@ const createPayment = catchAsync(async (req, res) => {
   const transaction = await snap.createTransaction(parameter);
   const transactionToken = transaction.token;
 
+  const otp = generateOTP();
+
   // Return the transaction token or use it as needed
   const payment = await payments.create({
     booking_id: order_id,
@@ -52,7 +55,7 @@ const createPayment = catchAsync(async (req, res) => {
     payment_method: null,
     payment_date: null,
     payment_status: null,
-    payment_code: null,
+    payment_code: otp,
   });
 
   console.log(payment);
@@ -85,7 +88,6 @@ const handlePaymentNotification = catchAsync(async (req, res) => {
       payment_method: data.payment_type,
       payment_date: data.transaction_time,
       payment_status: data.transaction_status,
-      payment_code: data.merchant_id,
     },
     {
       where: {
