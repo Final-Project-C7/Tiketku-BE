@@ -25,7 +25,7 @@ const createPayment = catchAsync(async (req, res) => {
   const userId = decodedToken.id;
   const user = await users.findByPk(userId);
 
-  const booking = await bookings.findByPk(order_id);
+  const booking = await bookings.findByPk(80);
 
   let parameter = {
     payment_type: payment_type,
@@ -58,11 +58,11 @@ const createPayment = catchAsync(async (req, res) => {
     payment_code: otp,
   });
 
-  console.log(payment);
-
-  res
-    .status(StatusCodes.OK)
-    .json(`https://app.sandbox.midtrans.com/snap/v2/vtweb/${transactionToken}`);
+  res.status(StatusCodes.OK).json({
+    url: `https://app.sandbox.midtrans.com/snap/v2/vtweb/${transactionToken}`,
+    message: "succes",
+    token: transactionToken,
+  });
 });
 
 const handlePaymentNotification = catchAsync(async (req, res) => {
